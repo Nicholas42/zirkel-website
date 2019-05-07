@@ -26,7 +26,7 @@ class RegistrationForm(FlaskForm):
     username = StringField(label="Benutzername",
                            validators=[DataRequired(), validate_unique("username", "Benutzername bereits vergeben,")])
     email = StringField(label="E-Mail",
-                        validators=[DataRequired(), validate_unique("email", "E-Mail-Adresse bereits benutzt.")])
+                        validators=[DataRequired(), Email(), validate_unique("email", "E-Mail-Adresse bereits benutzt.")])
     password = PasswordField(label="Passwort", validators=[DataRequired()])
     password2 = PasswordField(label="Wiederhole Passwort", validators=[DataRequired(), EqualTo('password')])
 
