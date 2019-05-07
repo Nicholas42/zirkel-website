@@ -10,17 +10,17 @@ def validate_unique(column, data, error, table=User):
 
 
 class LoginForm(FlaskForm):
-    username = StringField(label="Benutzername", validators=[DataRequired])
-    password = PasswordField(label="Passwort", validators=[DataRequired])
+    username = StringField(label="Benutzername", validators=[DataRequired()])
+    password = PasswordField(label="Passwort", validators=[DataRequired()])
     submit = SubmitField(label="Anmelden")
 
     fields = [username, password]
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField(label="Benutzername", validators=[DataRequired])
-    password = PasswordField(label="Passwort", validators=[DataRequired])
-    password2 = PasswordField(label="Wiederhole Passwort", validators=[DataRequired, EqualTo('password')])
+    username = StringField(label="Benutzername", validators=[DataRequired()])
+    password = PasswordField(label="Passwort", validators=[DataRequired()])
+    password2 = PasswordField(label="Wiederhole Passwort", validators=[DataRequired(), EqualTo('password')])
 
     submit = SubmitField(label="Anmelden")
 
