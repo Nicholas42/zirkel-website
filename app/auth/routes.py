@@ -1,5 +1,6 @@
 from flask import redirect, url_for, request, flash, render_template
 from flask_login import login_user, logout_user, current_user
+from app import db
 from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm
 from app.helpers.route_helpers import safe_next
@@ -32,3 +33,23 @@ def logout():
     logout_user()
     flash("Abgemeldet.", category="success")
     return redirect(url_for("main.index"))
+
+
+@bp.route("/register", methods=["GET", "POST"])
+def register():
+    if current_user.is_authenticated:
+        flash("Bereits angemeldet", category="info")
+        return redirect(safe_next(request.args.get("next")))
+
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data)
+        user.set_password(form.password.data)
+
+        db.session.add(user)
+        db.session.commit()
+
+        flash("Du bist jetzt registriert, %s!" % user.username)
+        return redirect(url_for("auth.login"))
+
+    return render_template("auth/register.html", form=form, title="Registrierung")
