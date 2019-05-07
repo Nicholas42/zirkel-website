@@ -4,9 +4,12 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app.models import User
 
 
-def validate_unique(column, data, error, table=User):
-    if table.query.filter_by(**{column: data}).first() is not None:
-        raise ValidationError(error)
+def validate_unique(column, error, table=User):
+    def validator(form, field):
+        if table.query.filter_by(**{column: field.data}).first() is not None:
+            raise ValidationError(error)
+
+    return validator
 
 
 class LoginForm(FlaskForm):
@@ -20,7 +23,8 @@ class LoginForm(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField(label="Benutzername", validators=[DataRequired()])
+    username = StringField(label="Benutzername",
+                           validators=[DataRequired(), validate_unique("username", "Benutzername bereits vergeben,")])
     password = PasswordField(label="Passwort", validators=[DataRequired()])
     password2 = PasswordField(label="Wiederhole Passwort", validators=[DataRequired(), EqualTo('password')])
 
@@ -30,9 +34,3 @@ class RegistrationForm(FlaskForm):
         yield self.username
         yield self.password
         yield self.password2
-
-    def validate_username(self, username):
-        return validate_unique("username", username.data, "Benutzername bereits vergeben.")
-
-    def validate_email(self, email):
-        return validate_unique("email", email.data, "E-Mail-Adresse wird bereits benutzt.")
