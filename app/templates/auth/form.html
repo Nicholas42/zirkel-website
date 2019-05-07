@@ -1,0 +1,14 @@
+{# Renders a form #}
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {% for field in form.fields %}
+    <p>
+        {{ field.label }}<br>
+        {{ field(size=32) }}<br>
+        {% for error in field.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>
