@@ -5,6 +5,12 @@
     <title>{% block title %} {% if title %} {{ title }} - {% endif %} A Website {% endblock %}</title>
 </head>
 <body>
+<div id="flashes">
+    {% for flash in get_flashed_messages() %}
+        <ul> {{ flash }}</ul>
+
+    {% endfor %}
+</div>
 {% block content %}
 {% endblock %}
 
