@@ -14,7 +14,9 @@ class LoginForm(FlaskForm):
     password = PasswordField(label="Passwort", validators=[DataRequired()])
     submit = SubmitField(label="Anmelden")
 
-    fields = [username, password]
+    def fields(self):
+        yield self.username
+        yield self.password
 
 
 class RegistrationForm(FlaskForm):
@@ -24,7 +26,10 @@ class RegistrationForm(FlaskForm):
 
     submit = SubmitField(label="Anmelden")
 
-    fields = [username, password, password2]
+    def fields(self):
+        yield self.username
+        yield self.password
+        yield self.password2
 
     def validate_username(self, username):
         return validate_unique("username", username.data, "Benutzername bereits vergeben.")
