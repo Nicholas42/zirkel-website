@@ -1,15 +1,16 @@
 from flask import redirect, url_for, request, flash, render_template
-from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm
+from app.helpers.route_helpers import safe_next
 from app.models import User
 
 
 @bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return "Bereits angemeldet."
+        flash("Bereits angemeldet", category="info")
+        return redirect(safe_next(request.args.get("next")))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -20,13 +21,8 @@ def login():
 
         login_user(user)
 
-        next_page = request.args.get("next")
-        if next_page is None or url_parse(next_page).netloc != "":
-            # Zweiteres ist gegen Weiterleitungen außerhalb der Seite
-            next_page = url_for("main.index")
-
         flash("Erfolgreich angemeldet.", category="success")
-        return redirect(next_page)
+        return redirect(safe_next(request.args.get("next")))
 
     return render_template("auth/login.html", title="Anmeldung", form=form)
 
