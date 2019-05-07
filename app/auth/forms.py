@@ -25,6 +25,8 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     username = StringField(label="Benutzername",
                            validators=[DataRequired(), validate_unique("username", "Benutzername bereits vergeben,")])
+    email = StringField(label="E-Mail",
+                        validators=[DataRequired(), validate_unique("email", "E-Mail-Adresse bereits benutzt.")])
     password = PasswordField(label="Passwort", validators=[DataRequired()])
     password2 = PasswordField(label="Wiederhole Passwort", validators=[DataRequired(), EqualTo('password')])
 
@@ -32,5 +34,6 @@ class RegistrationForm(FlaskForm):
 
     def fields(self):
         yield self.username
+        yield self.email
         yield self.password
         yield self.password2
