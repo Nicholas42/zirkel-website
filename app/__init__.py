@@ -27,6 +27,5 @@ def build_app(conf: object = Config) -> Flask:
     from app.aufgaben_ci import bp as ci_bp
     app.register_blueprint(ci_bp, url_prefix="/ci")
     app.view_functions["aufgaben_ci.static"] = login_required(ci_bp.send_static_file)
-    print(app.view_functions)
 
     return app
