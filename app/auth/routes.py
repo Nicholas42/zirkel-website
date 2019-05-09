@@ -20,7 +20,9 @@ def login():
             flash("Benutzername oder Passwort ist falsch.", category="error")
             return redirect(url_for("auth.login"))
 
-        login_user(user)
+        if not login_user(user):
+            flash("Dieser Benutzer ist deaktiviert. Bitte wende Dich an den Administrator.", category="error")
+            return redirect(url_for("main.index"))
 
         flash("Erfolgreich angemeldet.", category="success")
         return redirect(safe_next(request.args.get("next")))
