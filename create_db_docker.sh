@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-docker run --name mysql -d -e MYSQL_RANDOM_ROOT_PASSWORD=yes \
-    -e MYSQL_DATABASE=zirkel -e MYSQL_USER=zirkel \
-    -e MYSQL_PASSWORD=${DB_PASS} \
+# Load Variables from .env. Needs:
+# MYSQL_RANDOM_ROOT_PASSWORD (=yes)
+# MYSQL_DATABASE (=zirkel)
+# MYSQL_USER (=zirkel)
+# MYSQL_PASSWORD
+docker run --name mysql -d --env-file .env\
     mysql/mysql-server:5.7
