@@ -9,6 +9,7 @@
             <li><a href="/register">Registrieren</a></li>
         {% else %}
             <li><a href="/logout">Abmelden</a></li>
+            <li><a href="/change_password">Passwort ändern</a></li>
         {% endif %}
 
         {% if current_user.is_admin() %}
