@@ -16,7 +16,10 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     active = db.Column(db.Boolean)
+
     roles = db.relationship("Role", secondary=user_roles)
+    reviews = db.relationship("Review", back_populates="reviewer")
+    submissions = db.relationship("Submission", back_populates="author")
 
     def check_password(self, pw):
         return check_password_hash(self.password_hash, pw)
@@ -48,17 +51,27 @@ class Role(db.Model):
 
 class Submission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    author = db.Column(db.Integer, db.ForeignKey("user.id"))
+
+    author_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    author = db.relationship("User", back_populates="submissions")
+
     upload_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     notes = db.Column(db.String)
     filename = db.Column(db.String)
     fileurl = db.Column(db.String)
 
+    review = db.relationship("Review", back_populates="submission", uselist=False)
+
 
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    submission_id = db.Column(db.Integer, db.ForeignKey("submission.id"))
+
+    submission_id = db.Column(db.Integer, db.ForeignKey("submission.id"), unique=True)
+    submission = db.relationship("Submission", back_populates="review")
+
     reviewer_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    reviewer = db.relationship("User", back_populates="reviews")
+
     notes = db.Column(db.String)
     filename = db.Column(db.String)
     fileurl = db.Column(db.String)
