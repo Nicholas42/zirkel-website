@@ -15,6 +15,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String, index=True, unique=True)
     email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    active = db.Column(db.Boolean)
     roles = db.relationship("Role", secondary=user_roles)
 
     def check_password(self, pw):
@@ -22,6 +23,13 @@ class User(UserMixin, db.Model):
 
     def set_password(self, pw):
         self.password_hash = generate_password_hash(pw)
+
+    @property
+    def is_active(self):
+        return self.active
+
+    def set_active(self, active):
+        self.active = active
 
 
 class Role(db.Model):
