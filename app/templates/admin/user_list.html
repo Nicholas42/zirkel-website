@@ -1,6 +1,6 @@
 {% extends "basic_layout.html" %}
 
-{% block content %}
+{% block app_content %}
 <ul>
     {% for user in user_list %}
         {{ user.username }} {% if not user.active %} inactive {% endif %}

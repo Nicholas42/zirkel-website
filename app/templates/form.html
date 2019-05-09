@@ -1,17 +1,6 @@
 {# Renders a form #}
+{% import "bootstrap/wtf.html" as wtf%}
 
 {% macro render_form(form, enctype="") -%}
-<form action="" method="post" {% if enctype %}enctype="{{ enctype }}"{% endif %}>
-    {{ form.hidden_tag() }}
-    {% for field in form.fields() %}
-        <p>
-            {{ field.label }}<br>
-            {{ field(size=32) }}<br>
-            {% for error in field.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-    {% endfor %}
-    <p>{{ form.submit() }}</p>
-</form>
+    {{ wtf.quick_form(form) }}
 {% endmacro %}

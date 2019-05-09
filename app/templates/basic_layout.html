@@ -1,18 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %} {% if title %} {{ title }} - {% endif %} A Website {% endblock %}</title>
-</head>
-<body>
-<div id="flashes">
-    {% for flash in get_flashed_messages() %}
-        <ul> {{ flash }}</ul>
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/utils.html" as utils %}
 
-    {% endfor %}
-</div>
-{% block content %}
+{% block title %}
+    {% if title %} {{ title }} - {% endif %} A Website
 {% endblock %}
 
-</body>
-</html>
+{% block content %}
+    <div class="container">
+        {{ utils.flashed_messages() }}
+    {% block app_content %}
+    {% endblock %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
