@@ -11,7 +11,7 @@ RUN venv/bin/pip install gunicorn pymysql
 
 COPY app app
 COPY migrations migrations
-COPY .env config.py start.sh ./
+COPY .env config.py start.sh website.py ./
 RUN chmod u+x start.sh
 
 ENV FLASK_APP website.py
