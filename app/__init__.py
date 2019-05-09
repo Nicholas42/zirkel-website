@@ -34,4 +34,7 @@ def build_app(conf: object = Config) -> Flask:
     from app.upload import bp as upload_bp
     app.register_blueprint(upload_bp)
 
+    from app.admin import bp as admin_bp
+    app.register_blueprint(admin_bp, url_prefix="/admin")
+
     return app

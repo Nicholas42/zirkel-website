@@ -1,0 +1,12 @@
+{% extends "basic_layout.html" %}
+
+{% block content %}
+<ul>
+    {% for user in user_list %}
+        {{ user.username }} {% if not user.active %} inactive {% endif %}
+        <form action="/admin/ban" method="post">
+        <button type="submit" name="user" value="{{ user.id }}">Ban</button>
+        </form> <br>
+    {% endfor %}
+</ul>
+{% endblock %}
