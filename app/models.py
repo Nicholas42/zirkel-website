@@ -1,5 +1,6 @@
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
+from datetime import datetime
 from app import db, login
 
 user_roles = db.Table(
@@ -26,6 +27,15 @@ class User(UserMixin, db.Model):
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), index=True, unique=True)
+
+
+class Submission(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    author = db.Column(db.Integer, db.ForeignKey("user.id"))
+    upload_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    notes = db.Column(db.String)
+    filename = db.Column(db.String)
+    fileurl = db.Column(db.String)
 
 
 @login.user_loader
