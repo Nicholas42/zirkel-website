@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_required
 from flask_uploads import UploadSet, configure_uploads
+from flask_bootstrap import Bootstrap
 from config import Config
 
 db = SQLAlchemy()
@@ -10,6 +11,7 @@ migrate = Migrate()
 login = LoginManager()
 login.login_view = "auth.login"
 submissions = UploadSet("submissions")
+bs = Bootstrap()
 
 
 def build_app(conf: object = Config) -> Flask:
@@ -20,6 +22,7 @@ def build_app(conf: object = Config) -> Flask:
     migrate.init_app(app, db)
     login.init_app(app)
     configure_uploads(app, submissions)
+    bs.init_app(app)
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
