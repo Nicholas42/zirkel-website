@@ -24,6 +24,15 @@ class User(UserMixin, db.Model):
     def set_password(self, pw):
         self.password_hash = generate_password_hash(pw)
 
+    def has_role(self, role_name: str):
+        role = Role.query.filter_by(name=role_name).first()
+        if role is None:
+            raise RuntimeError("Role %s does not exist." % role_name)
+        return role in self.roles
+
+    def is_admin(self):
+        return self.has_role("admin")
+
     @property
     def is_active(self):
         return self.active
