@@ -46,6 +46,15 @@ class Submission(db.Model):
     fileurl = db.Column(db.String)
 
 
+class Review(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    submission_id = db.Column(db.Integer, db.ForeignKey("submission.id"))
+    reviewer_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    notes = db.Column(db.String)
+    filename = db.Column(db.String)
+    fileurl = db.Column(db.String)
+
+
 @login.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
