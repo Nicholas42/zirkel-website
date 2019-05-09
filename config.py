@@ -17,3 +17,7 @@ class Config:
     UPLOADED_SUBMISSIONS_ALLOW = ["tex", "pdf", "tar", "gz", "zip"]
     UPLOADS_DEFAULT_DEST = os.environ.get("UPLOAD_DIR") or os.path.join(basedir, ".data", "submissions")
     UPLOADS_DEFAULT_URL = '/static/submissions/'
+
+    ADMIN_MAIL = os.environ.get('ADMIN_MAIL') or "root@localhost"
+    ADMIN_PW = os.environ.get('ADMIN_PW')
+
