@@ -30,7 +30,8 @@ class ChangePasswordForm(FlaskForm):
     submit = SubmitField(label="Ändern")
 
     def validate_password(self, password):
-        return current_user.check_password(password.data)
+        if not current_user.check_password(password.data):
+            raise ValidationError("Passwort falsch")
 
 
 class RegistrationForm(FlaskForm):
