@@ -1,0 +1,7 @@
+{% extends "basic_layout.html" %}
+{% from "form.html" import render_form %}
+
+{% block content %}
+    <h2>Bearbeitung hochladen</h2>
+    {{ render_form(form, "multipart/form-data") }}
+{% endblock %}
