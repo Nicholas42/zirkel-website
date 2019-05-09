@@ -13,6 +13,12 @@ def before_request():
     pass
 
 
+@bp.route("/")
+@bp.route("/panel")
+def panel():
+    return render_template("admin/panel.html")
+
+
 @bp.route("/user_list")
 def user_list():
     ul = User.query.all()
