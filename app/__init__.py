@@ -2,12 +2,14 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_required
+from flask_uploads import UploadSet, configure_uploads
 from config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
 login.login_view = "auth.login"
+submissions = UploadSet("submissions")
 
 
 def build_app(conf: object = Config) -> Flask:
@@ -17,6 +19,7 @@ def build_app(conf: object = Config) -> Flask:
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
+    configure_uploads(app, submissions)
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
@@ -27,5 +30,8 @@ def build_app(conf: object = Config) -> Flask:
     from app.aufgaben_ci import bp as ci_bp
     app.register_blueprint(ci_bp, url_prefix="/ci")
     app.view_functions["aufgaben_ci.static"] = login_required(ci_bp.send_static_file)
+
+    from app.upload import bp as upload_bp
+    app.register_blueprint(upload_bp)
 
     return app

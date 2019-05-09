@@ -7,7 +7,13 @@ load_dotenv(os.path.join(basedir, '.env'))
 
 class Config:
     SECRET_KEY = "Manfs größtes Gehemnis"
+
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    GIT_REPO = os.environ.get('REPO_ROOT') or os.path.join(basedir, "app", ".data", "git")
+
+    GIT_REPO = os.environ.get('REPO_ROOT') or os.path.join(basedir, ".data", "git")
     ORIGIN_URL = os.environ.get('ORIGIN_URL') or "git@github.com:Nicholas42/korrespondenzzirkel.git"
+
+    UPLOADED_SUBMISSIONS_ALLOW = ["pdf", "tar", "targz", "zip"]
+    UPLOADS_DEFAULT_DEST = os.environ.get("UPLOAD_DIR") or os.path.join(basedir, ".data", "submissions")
+    UPLOADS_DEFAULT_URL = '/static/submissions/'
