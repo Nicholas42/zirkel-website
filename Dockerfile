@@ -6,8 +6,8 @@ WORKDIR /home/zirkel/
 
 COPY requirements.txt requirements.txt
 RUN python -m venv venv
-RUN venv/bin/python install -r requirements.txt
-RUN venv/bin/python install gunicorn mariadb
+RUN venv/bin/pip install -r requirements.txt
+RUN venv/bin/pip install gunicorn mariadb
 
 COPY app app
 COPY migrations migrations
