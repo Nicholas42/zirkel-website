@@ -40,4 +40,7 @@ def build_app(conf: object = Config) -> Flask:
     from app.admin import bp as admin_bp
     app.register_blueprint(admin_bp, url_prefix="/admin")
 
+    from app.review import bp as review_bp
+    app.register_blueprint(review_bp)
+
     return app
