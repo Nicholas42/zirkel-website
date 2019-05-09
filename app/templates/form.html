@@ -1,6 +1,7 @@
 {# Renders a form #}
 
-<form action="" method="post">
+{% macro render_form(form, enctype="") -%}
+<form action="" method="post" {% if enctype %}enctype="{{ enctype }}"{% endif %}>
     {{ form.hidden_tag() }}
     {% for field in form.fields() %}
         <p>
@@ -13,3 +14,4 @@
     {% endfor %}
     <p>{{ form.submit() }}</p>
 </form>
+{% endmacro %}
