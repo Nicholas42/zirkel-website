@@ -10,11 +10,11 @@
         {% else %}
             <li><a href="/logout">Abmelden</a></li>
             <li><a href="/change_password">Passwort ändern</a></li>
+            {% if current_user.is_admin() %}
+                <li><a href="/admin">Admin-Panel</a></li>
+            {% endif %}
         {% endif %}
 
-        {% if current_user.is_admin() %}
-            <li><a href="/admin">Admin-Panel</a></li>
-        {% endif %}
 
         <li><a href="/upload">Lösung hochladen</a></li>
     </ul>
