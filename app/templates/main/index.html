@@ -13,6 +13,9 @@
             {% if current_user.is_admin() %}
                 <li><a href="/admin">Admin-Panel</a></li>
             {% endif %}
+            {% if current_user.has_role("korrektor") %}
+                <li><a href="/submissions">Bearbeitungen</a></li>
+            {% endif %}
         {% endif %}
 
 
