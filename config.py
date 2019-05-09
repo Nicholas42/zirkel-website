@@ -14,6 +14,6 @@ class Config:
     GIT_REPO = os.environ.get('REPO_ROOT') or os.path.join(basedir, ".data", "git")
     ORIGIN_URL = os.environ.get('ORIGIN_URL') or "git@github.com:Nicholas42/korrespondenzzirkel.git"
 
-    UPLOADED_SUBMISSIONS_ALLOW = ["tex", "pdf", "tar", "targz", "zip"]
+    UPLOADED_SUBMISSIONS_ALLOW = ["tex", "pdf", "tar", "gz", "zip"]
     UPLOADS_DEFAULT_DEST = os.environ.get("UPLOAD_DIR") or os.path.join(basedir, ".data", "submissions")
     UPLOADS_DEFAULT_URL = '/static/submissions/'
