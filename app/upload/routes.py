@@ -5,6 +5,7 @@ from app import db, submissions
 from app.models import Submission
 from app.upload import bp
 from app.upload.forms import SubmissionForm
+from app.decorators import role_required
 
 
 @bp.route("/upload", methods=["POST", "GET"])
@@ -26,6 +27,7 @@ def upload():
 
 
 @bp.route("/uploads/submissions/<filename>")
+@role_required("korrektor")
 def serve_file(filename):
     if Submission.query.filter_by(filename=filename).first() is None:
         abort(404)
