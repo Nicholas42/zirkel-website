@@ -7,7 +7,6 @@ from app.decorators import role_required
 
 
 @bp.before_request
-@login_required
 @role_required("admin")
 def before_request():
     pass
