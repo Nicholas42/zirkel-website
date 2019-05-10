@@ -1,6 +1,7 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required
 from app import db
+from app.admin.forms import CreateUserForm
 from app.models import User, Role
 from app.admin import bp
 from app.decorators import role_required
@@ -43,3 +44,20 @@ def add_role():
     db.session.commit()
 
     return redirect(url_for("admin.user_list"))
+
+
+@bp.route("/create_user", methods=["GET", "POST"])
+def create_user():
+    form = CreateUserForm(Role.query.all())
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data, roles=[Role.query.get(i) for i in form.roles.data])
+        pw = user.set_random_password()
+        # TODO: Send per mail!
+
+        db.session.add(user)
+        db.session.commit()
+
+        flash("User mit Passwort %s erstellt." % pw, "success")
+        return redirect(url_for("admin.create_user"))
+
+    return render_template("basic_form.html", form=form, title="Erstelle Benutzer")
