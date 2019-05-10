@@ -1,0 +1,8 @@
+{% extends "basic_layout.html" %}
+{% from "form.html" import render_form %}
+
+{% block app_content %}
+    <h1>Bewertung hochladen</h1>
+    {{ render_form(form) }}
+
+{% endblock %}
