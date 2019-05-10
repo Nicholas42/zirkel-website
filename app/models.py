@@ -1,6 +1,11 @@
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
+import string
+import secrets
+
+PW_ALPHABET = string.ascii_letters + string.digits
+
 from app import db, login
 
 user_roles = db.Table(
@@ -26,6 +31,11 @@ class User(UserMixin, db.Model):
 
     def set_password(self, pw):
         self.password_hash = generate_password_hash(pw)
+
+    def set_random_password(self):
+        pw = ''.join(secrets.choice(PW_ALPHABET) for i in range(12))
+        self.set_password(pw)
+        return pw
 
     def has_role(self, role_name: str):
         role = Role.query.filter_by(name=role_name).first()
