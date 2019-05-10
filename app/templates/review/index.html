@@ -8,6 +8,7 @@
         <th>Hochgeladen am</th>
         <th>korrigiert</th>
         <th>Url</th>
+        <th>Review</th>
         </thead>
         <tbody>
         {% if submissions %}
@@ -17,6 +18,7 @@
                     <td>{{ sub.upload_time }}</td>
                     <td>{% if sub.review is not none %}{{ sub.review.reviewer.username }}{% else %}Nein{% endif %}</td>
                     <td><a href="{{ sub.fileurl }}">Datei</a></td>
+                    <td><a href="/review?submission_id={{ sub.id }}">Review</a></td>
                 </tr>
             {% endfor %}
         {% endif %}

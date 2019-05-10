@@ -21,7 +21,7 @@ def submissions():
 
 @bp.route("/review", methods=["GET", "POST"])
 def review():
-    form = ReviewUploadForm()
+    form = ReviewUploadForm(submission_id=request.args.get("submission_id", None))
     if form.validate_on_submit():
         filename = reviews.save(request.files["review_file"])
         fileurl = reviews.url(filename)
