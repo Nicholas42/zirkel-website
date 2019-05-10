@@ -11,6 +11,7 @@ migrate = Migrate()
 login = LoginManager()
 login.login_view = "auth.login"
 submissions = UploadSet("submissions")
+reviews = UploadSet("reviews")
 bs = Bootstrap()
 
 
@@ -21,7 +22,7 @@ def build_app(conf: object = Config) -> Flask:
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
-    configure_uploads(app, submissions)
+    configure_uploads(app, (submissions, reviews))
     bs.init_app(app)
 
     from app.main import bp as main_bp
