@@ -12,7 +12,7 @@ user_roles = db.Table(
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, index=True, unique=True)
+    username = db.Column(db.String(60), index=True, unique=True)
     email = db.Column(db.String(128), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     active = db.Column(db.Boolean)
