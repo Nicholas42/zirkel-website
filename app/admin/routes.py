@@ -1,10 +1,12 @@
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required
-from app import db
+from os import remove, path
+from app import db, submissions
 from app.admin.forms import CreateUserForm
-from app.models import User, Role
+from app.models import User, Role, Submission
 from app.admin import bp
 from app.decorators import role_required
+from app.helpers.route_helpers import safe_next
 
 
 @bp.before_request
@@ -50,7 +52,8 @@ def add_role():
 def create_user():
     form = CreateUserForm(Role.query.all())
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data, roles=[Role.query.get(i) for i in form.roles.data])
+        user = User(username=form.username.data, email=form.email.data,
+                    roles=[Role.query.get(i) for i in form.roles.data])
         pw = user.set_random_password()
         # TODO: Send per mail!
 
@@ -61,3 +64,23 @@ def create_user():
         return redirect(url_for("admin.create_user"))
 
     return render_template("basic_form.html", form=form, title="Erstelle Benutzer")
+
+
+@bp.route("/delete_submission", methods=["POST"])
+def delete_submission():
+    submission = Submission.query.get(request.form["sub_id"])
+
+    if submission is None:
+        flash("Bearbeitungsid nicht vorhanden.", "error")
+        return redirect(safe_next(request.args.get("next")))
+
+    try:
+        remove(path.join(submissions.config.destination, submission.filename))
+    except FileNotFoundError:
+        flash("Datei war bereits gelöscht.")
+
+    db.session.delete(submission)
+    db.session.commit()
+
+    flash("Bearbeitung entfernt.", "success")
+    return redirect(safe_next(request.args.get("next")))

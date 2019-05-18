@@ -9,6 +9,9 @@
         <th>korrigiert</th>
         <th>Url</th>
         <th>Review</th>
+        {% if current_user.is_admin() %}
+            <th>Löschen</th>
+        {% endif %}
         </thead>
         <tbody>
         {% if submissions %}
@@ -19,6 +22,13 @@
                     <td>{% if sub.review is not none %}{{ sub.review.reviewer.username }}{% else %}Nein{% endif %}</td>
                     <td><a href="{{ sub.fileurl }}">Datei</a></td>
                     <td><a href="/review?submission_id={{ sub.id }}">Review</a></td>
+                    {% if current_user.is_admin() %}
+                        <td>
+                            <form method="post" action="/admin/delete_submission">
+                                <button type="submit" value="{{ sub.id }}" name="sub_id">Löschen</button>
+                            </form>
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         {% endif %}

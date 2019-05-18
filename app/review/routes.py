@@ -26,8 +26,10 @@ def review():
         filename = reviews.save(request.files["review_file"])
         fileurl = reviews.url(filename)
 
-        rev = Review(reviewer_id=current_user.get_id(), submission_id=form.submission_id.data, notes=form.notes.data,
-                     filename=filename, fileurl=fileurl)
+        submission = Submission.query.get(form.submission_id.data)
+
+        rev = Review(reviewer_id=current_user.get_id(), notes=form.notes.data, filename=filename, fileurl=fileurl)
+        rev.submission = submission
         db.session.add(rev)
         db.session.commit()
 

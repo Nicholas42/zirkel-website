@@ -1,4 +1,5 @@
 from flask_login import UserMixin
+from sqlalchemy.orm import backref
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
 import string
@@ -23,8 +24,6 @@ class User(UserMixin, db.Model):
     active = db.Column(db.Boolean)
 
     roles = db.relationship("Role", secondary=user_roles)
-    reviews = db.relationship("Review", back_populates="reviewer")
-    submissions = db.relationship("Submission", back_populates="author")
 
     def check_password(self, pw):
         return check_password_hash(self.password_hash, pw)
@@ -62,25 +61,28 @@ class Role(db.Model):
 class Submission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
-    author_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    author = db.relationship("User", back_populates="submissions")
-
     upload_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     notes = db.Column(db.String)
     filename = db.Column(db.String)
     fileurl = db.Column(db.String)
 
-    review = db.relationship("Review", back_populates="submission", uselist=False)
+    # Foreign Keys
+    reviewer_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    author_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    review_id = db.Column(db.Integer, db.ForeignKey("review.id"))
+
+    # Relationships
+    reviewer = db.relationship("User", foreign_keys=[reviewer_id])
+    author = db.relationship("User", foreign_keys=[author_id])
+    review = db.relationship("Review", foreign_keys=[review_id], backref=backref("submission", uselist=False))
 
 
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
-    submission_id = db.Column(db.Integer, db.ForeignKey("submission.id"), unique=True)
-    submission = db.relationship("Submission", back_populates="review")
-
     reviewer_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    reviewer = db.relationship("User", back_populates="reviews")
+
+    reviewer = db.relationship("User", foreign_keys=[reviewer_id])
 
     notes = db.Column(db.String)
     filename = db.Column(db.String)
