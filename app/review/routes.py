@@ -19,6 +19,19 @@ def submissions():
     return render_template("review/index.html", submissions=Submission.query.all())
 
 
+@bp.route("/claim_submission", methods=["POST"])
+def claim_submission():
+    sub = Submission.query.get(request.form["sub_id"])
+    sub.reviewer = current_user
+
+    db.session.add(sub)
+    db.session.commit()
+    print(sub.reviewer)
+    print(sub.is_claimed())
+
+    return redirect(url_for("review.submissions"))
+
+
 @bp.route("/review", methods=["GET", "POST"])
 def review():
     form = ReviewUploadForm(submission_id=request.args.get("submission_id", None))

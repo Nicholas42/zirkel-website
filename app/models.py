@@ -76,6 +76,12 @@ class Submission(db.Model):
     author = db.relationship("User", foreign_keys=[author_id])
     review = db.relationship("Review", foreign_keys=[review_id], backref=backref("submission", uselist=False))
 
+    def is_open(self):
+        return self.review is None
+
+    def is_claimed(self):
+        return self.reviewer is not None
+
 
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
