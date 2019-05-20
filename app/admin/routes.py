@@ -83,4 +83,4 @@ def delete_submission():
     db.session.commit()
 
     flash("Bearbeitung entfernt.", "success")
-    return redirect(safe_next(request.args.get("next")))
+    return redirect(safe_next(request.args.get("next"), default="review.submission"))

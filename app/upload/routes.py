@@ -33,3 +33,11 @@ def serve_file(filename):
         abort(404)
 
     return send_from_directory(submissions.config.destination, filename)
+
+
+@bp.route("/my_submissions")
+@login_required
+def my_submissions():
+    subs = Submission.query.filter_by(author_id=current_user.id)
+
+    return render_template("upload/my_submissions.html", subs=subs)

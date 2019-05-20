@@ -1,0 +1,24 @@
+{% extends "basic_layout.html" %}
+
+{% block title %} Meine Bearbeitungen {% endblock %}
+{% block app_content %}
+    <h1>Meine Bearbeitungen</h1>
+    <table class="table">
+        <thead>
+        <th>Bearbeitungsid</th>
+        <th>Datei</th>
+        </thead>
+        <tbody>
+        {% for i in subs %}
+            <tr>
+                <td>
+                    {{ i.id }}
+                </td>
+                <td>
+                    <a href="{{ i.fileurl }}">Hier</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
