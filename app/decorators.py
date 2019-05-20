@@ -1,4 +1,4 @@
-from flask import abort
+from flask import abort, render_template
 from flask_login import current_user, login_required
 
 
@@ -14,3 +14,10 @@ def role_required(role):
         return decorated_function
 
     return decorator
+
+
+def disable_route(f):
+    def decorate_function(*args, **kwargs):
+        return render_template("page_disabled.html"), 403
+
+    return decorate_function

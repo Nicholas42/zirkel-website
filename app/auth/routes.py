@@ -5,6 +5,7 @@ from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm, ChangePasswordForm
 from app.helpers.route_helpers import safe_next
 from app.models import User
+from app.decorators import disable_route
 
 
 @bp.route("/login", methods=["GET", "POST"])
@@ -39,6 +40,7 @@ def logout():
 
 
 @bp.route("/register", methods=["GET", "POST"])
+@disable_route
 def register():
     if current_user.is_authenticated:
         flash("Bereits angemeldet", category="info")
