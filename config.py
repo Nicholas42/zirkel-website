@@ -22,10 +22,9 @@ class Config:
     ADMIN_MAIL = os.environ.get('ADMIN_MAIL') or "root@localhost"
     ADMIN_PW = os.environ.get('ADMIN_PW')
 
-    MAIL_SERVER = os.environ.get("MAIL_SERVER")
-    MAIL_PORT = os.environ.get("MAIL_PORT")
+    MAIL_SERVER = os.environ.get("MAIL_SERVER") or "localhost"
+    MAIL_PORT = int(os.environ.get("MAIL_PORT") or 0)
     MAIL_USE_TLS = os.environ.get("MAIL_USE_TLS")
-    MAIL_USE_SSL = True
-    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
-    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME") or ""
+    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD") or ""
 
