@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager, login_required
 from flask_uploads import UploadSet, configure_uploads
 from flask_bootstrap import Bootstrap
+from flask_mail import Mail
 from config import Config
 
 db = SQLAlchemy()
@@ -13,6 +14,7 @@ login.login_view = "auth.login"
 submissions = UploadSet("submissions")
 reviews = UploadSet("reviews")
 bs = Bootstrap()
+mail = Mail()
 
 
 def build_app(conf: object = Config) -> Flask:
@@ -24,6 +26,7 @@ def build_app(conf: object = Config) -> Flask:
     login.init_app(app)
     configure_uploads(app, (submissions, reviews))
     bs.init_app(app)
+    mail.init_app(app)
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)

@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for, flash
-from flask_login import login_required
 from os import remove, path
 from app import db, submissions
+from app.email import send_mail
 from app.admin.forms import CreateUserForm
 from app.models import User, Role, Submission
 from app.admin import bp
@@ -59,6 +59,17 @@ def create_user():
 
         db.session.add(user)
         db.session.commit()
+
+        send_mail("Anmeldung beim Korrespondenzzirkel",
+                  ("Hallo %s,\n"
+                   "\n"
+                   "Du wurdest beim Korrespondenzzirkel auf zirkel.nicholas-schwab.de registriert. Du kannst dich mit "
+                   "dem Passwort %s auf zirkel.nicholas-schwab.de anmelden.\n "
+                   "\n"
+                   "Falls du irrtümlich registriert wurdest, wende dich an nics-lohr@gmx.de.\n"
+                   "\n"
+                   "Viele Grüße\n"
+                   "Das Korrespondenzzirkel-Team") % (user.username, pw), [user.email])
 
         flash("User mit Passwort %s erstellt." % pw, "success")
         return redirect(url_for("admin.create_user"))
