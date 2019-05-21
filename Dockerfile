@@ -5,7 +5,8 @@ RUN adduser zirkel
 WORKDIR /home/zirkel/
 
 COPY requirements.txt requirements.txt
-RUN apt-get install latexmk
+RUN apt-get update
+RUN apt-get install -y latexmk
 RUN python -m venv venv
 RUN venv/bin/pip install -r requirements.txt
 RUN venv/bin/pip install gunicorn psycopg2
