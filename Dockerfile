@@ -6,7 +6,7 @@ WORKDIR /home/zirkel/
 
 COPY requirements.txt requirements.txt
 RUN apt-get update
-RUN apt-get install -y latexmk
+RUN apt-get install -y latexmk texlive-base
 RUN python -m venv venv
 RUN venv/bin/pip install -r requirements.txt
 RUN venv/bin/pip install gunicorn psycopg2
