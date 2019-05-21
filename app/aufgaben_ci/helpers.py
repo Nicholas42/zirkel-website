@@ -27,7 +27,7 @@ def make_all(directory):
     env["TEXMFHOME"] = str(directory.joinpath("Technisches/texmf"))
     for f in directory.glob("**/*.tex"):
         runs += 1
-        ret = run(LATEXMK_CALL + [str(f.absolute())], stdout=DEVNULL, stderr=DEVNULL)
+        ret = run(LATEXMK_CALL + [str(f.absolute())], env=env, stdout=DEVNULL, stderr=DEVNULL)
         if ret.returncode != 0:
             errors.append(str(f.relative_to(directory)))
 
