@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, current_app
 from os import remove, path
 from app import db, submissions
 from app.email import send_mail
@@ -55,7 +55,6 @@ def create_user():
         user = User(username=form.username.data, email=form.email.data,
                     roles=[Role.query.get(i) for i in form.roles.data])
         pw = user.set_random_password()
-        # TODO: Send per mail!
 
         db.session.add(user)
         db.session.commit()
@@ -66,12 +65,12 @@ def create_user():
                    "Du wurdest beim Korrespondenzzirkel auf zirkel.nicholas-schwab.de registriert. Du kannst dich mit "
                    "dem Passwort %s auf zirkel.nicholas-schwab.de anmelden.\n "
                    "\n"
-                   "Falls du irrtümlich registriert wurdest, wende dich an nics-lohr@gmx.de.\n"
+                   "Falls du irrtümlich registriert wurdest, wende dich an %s.\n"
                    "\n"
                    "Viele Grüße\n"
-                   "Das Korrespondenzzirkel-Team") % (user.username, pw), [user.email])
+                   "Das Korrespondenzzirkel-Team") % (user.username, pw, current_app.config["ADMIN_MAIL"]),
+                  [user.email])
 
-        flash("User mit Passwort %s erstellt." % pw, "success")
         return redirect(url_for("admin.create_user"))
 
     return render_template("basic_form.html", form=form, title="Erstelle Benutzer")
