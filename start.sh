@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+ssh-keyscan github.com >> ~/.ssh/known_hosts
 source venv/bin/activate
 flask db upgrade
 flask init-db roles
