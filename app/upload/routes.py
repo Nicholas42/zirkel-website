@@ -40,6 +40,18 @@ def serve_file(filename):
     return send_from_directory(submissions.config.destination, filename)
 
 
+@bp.route("/submission/<int:index>")
+def submission(index):
+    sub = Submission.query.get(index)
+    if sub is None:
+        abort(404)
+
+    if not current_user.has_role("korrektor") and not sub.author == current_user:
+        abort(403)
+
+    return render_template("upload/submission.html", sub=sub)
+
+
 @bp.route("/my_submissions")
 @login_required
 def my_submissions():

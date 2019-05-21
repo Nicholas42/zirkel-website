@@ -95,6 +95,12 @@ class Submission(db.Model):
     def is_claimed(self):
         return self.reviewer is not None
 
+    def get_upload_time(self):
+        return self.upload_time.strftime("%d.%m.%Y %H:%M")
+
+    def get_upload_date(self):
+        return self.upload_time.strftime("%d.%m.%Y")
+
 
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)

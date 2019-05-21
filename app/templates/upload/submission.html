@@ -1,0 +1,12 @@
+{% extends "basic_layout.html" %}
+
+{% block title %}Bearbeitung {{ sub.id }}{% endblock %}
+
+{% block app_content %}
+    <h1>Bearbeitung {{ sub.id }}</h1>
+    <h5>Abgegeben am {{ sub.get_upload_time() }}</h5>
+    <h5>Von {{ sub.author.username }}</h5>
+    <h5><a href={{ sub.fileurl }}>Datei</a></h5>
+    <h5>Notizen:</h5>
+    <p>{{ sub.notes }}</p>
+{% endblock %}

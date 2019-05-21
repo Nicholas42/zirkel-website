@@ -18,8 +18,8 @@
             {% for sub in submissions %}
                 {% if sub.is_open() and not sub.is_claimed() %}
                     <tr>
-                        <td>{{ sub.id }}</td>
-                        <td>{{ sub.upload_time }}</td>
+                        <td><a href="/submission/{{ sub.id }}">{{ sub.id }}</a></td>
+                        <td>{{ sub.get_upload_time() }}</td>
                         <td><a href="{{ sub.fileurl }}">Datei</a></td>
                         <td>
                             <form method="post" action="/claim_submission">
@@ -58,8 +58,8 @@
             {% for sub in submissions %}
                 {% if sub.is_open() and sub.is_claimed() %}
                     <tr>
-                        <td>{{ sub.id }}</td>
-                        <td>{{ sub.upload_time }}</td>
+                        <td><a href="/submission/{{ sub.id }}">{{ sub.id }}</a></td>
+                        <td>{{ sub.get_upload_time() }}</td>
                         <td><a href="{{ sub.fileurl }}">Datei</a></td>
                         <td>{{ sub.reviewer.username }}</td>
                         <td><a href="/review?submission_id={{ sub.id }}">hinzufügen</a></td>
@@ -95,8 +95,8 @@
             {% for sub in submissions %}
                 {% if not sub.is_open() %}
                     <tr>
-                        <td>{{ sub.id }}</td>
-                        <td>{{ sub.upload_time }}</td>
+                        <td><a href="/submission/{{ sub.id }}">{{ sub.id }}</a></td>
+                        <td>{{ sub.get_upload_time() }}</td>
                         <td>{{ sub.review.reviewer.username }}</td>
                         <td><a href="{{ sub.fileurl }}">Datei</a></td>
                         <td><a href="{{ sub.review.fileurl }}">Datei</a></td>
