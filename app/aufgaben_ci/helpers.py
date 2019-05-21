@@ -14,9 +14,9 @@ def pull_repo(git_path, upstream_url):
     try:
         repo = Repo(git_path)
     except (InvalidGitRepositoryError, NoSuchPathError):
-        repo = Repo.clone_from(upstream_url, git_path)
+        repo = Repo.clone_from(upstream_url, git_path, branch="release")
 
-    repo.git.pull(refspec="refs/heads/release:refs/heads/master")
+    repo.git.pull()
 
 
 def make_all(directory):
