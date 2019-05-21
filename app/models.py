@@ -23,6 +23,10 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     active = db.Column(db.Boolean)
 
+    next_module = db.Column(db.Date)
+    next_sub = db.Column(db.Date)
+    next_subject = db.Column(db.String)
+
     roles = db.relationship("Role", secondary=user_roles)
 
     def __init__(self, username, email, roles=None, active=True):

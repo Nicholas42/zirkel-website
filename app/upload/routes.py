@@ -17,6 +17,11 @@ def upload():
         fileurl = submissions.url(filename)
 
         sub = Submission(author_id=current_user.get_id(), notes=form.notes.data, filename=filename, fileurl=fileurl)
+
+        current_user.next_module = form.next_module.data
+        current_user.next_sub = form.next_sub.data
+        current_user.next_subject = form.next_subject.data
+
         db.session.add(sub)
         db.session.commit()
 
