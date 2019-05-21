@@ -1,3 +1,5 @@
+import os
+
 from git import Repo, InvalidGitRepositoryError, NoSuchPathError
 from shutil import copy
 from subprocess import run, DEVNULL
@@ -14,13 +16,15 @@ def pull_repo(git_path, upstream_url):
     except (InvalidGitRepositoryError, NoSuchPathError):
         repo = Repo.clone_from(upstream_url, git_path)
 
-    repo.git.pull()
+    repo.git.pull(pathspec="refs/heads/release:refs/heads/master")
 
 
 def make_all(directory):
     directory = Path(directory)
     runs = 0
     errors = []
+    env = os.environ.copy()
+    env["TEXMFHOME"] = str(directory.joinpath("Technisches/texmf"))
     for f in directory.glob("**/*.tex"):
         runs += 1
         ret = run(LATEXMK_CALL + [str(f.absolute())], stdout=DEVNULL, stderr=DEVNULL)

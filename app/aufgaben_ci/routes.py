@@ -8,7 +8,7 @@ from app.aufgaben_ci.helpers import pull_repo, make_all, copy_rec, PDF_PATTERN
 def pullhook():
     git_path = app.config["GIT_REPO"]
     origin_url = app.config["ORIGIN_URL"]
-    #pull_repo(git_path, origin_url)
+    pull_repo(git_path, origin_url)
     ret = make_all(git_path)
     copy_rec(git_path, path.join(bp.static_folder, "pdfs"), PDF_PATTERN)
 
