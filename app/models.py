@@ -25,10 +25,13 @@ class User(UserMixin, db.Model):
 
     roles = db.relationship("Role", secondary=user_roles)
 
-    def __init__(self, username, email, roles=[], active=True):
+    def __init__(self, username, email, roles=None, active=True):
         self.username = username
         self.email = email
-        self.roles = roles
+        if self.roles is None:
+            self.roles = []
+        else:
+            self.roles = roles
         self.active = active
 
     def check_password(self, pw):
