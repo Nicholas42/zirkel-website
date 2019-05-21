@@ -5,6 +5,7 @@ RUN adduser zirkel
 WORKDIR /home/zirkel/
 
 COPY requirements.txt requirements.txt
+RUN apt-get install latexmk
 RUN python -m venv venv
 RUN venv/bin/pip install -r requirements.txt
 RUN venv/bin/pip install gunicorn psycopg2
@@ -14,6 +15,9 @@ COPY app app
 COPY migrations migrations
 COPY .env config.py start.sh website.py ./
 RUN chmod u+x start.sh
+
+RUN mkdir ~/.ssh
+COPY id_rsa.korrespondenzzirkel .ssh/id_rsa
 
 ENV FLASK_APP website.py
 
