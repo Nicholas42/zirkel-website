@@ -5,10 +5,8 @@
 
     <div class="list-group">
         {% if not current_user.is_authenticated %}
-            <a class="list-group-item" href="{{ url_for("auth.login") }}">Anmelden</a>
             {# <a class="list-group-item" href="/register">Registrieren</a></li> #}
         {% else %}
-            <a class="list-group-item" href="{{ url_for("auth.logout") }}">Abmelden</a></li>
             <a class="list-group-item" href="{{ url_for("auth.change_password") }}">Passwort ändern</a></li>
             {% if current_user.is_admin() %}
                 <a class="list-group-item" href="{{ url_for("admin.panel") }}">Admin-Panel</a></li>
@@ -21,7 +19,6 @@
             <a class="list-group-item" href="{{ url_for("aufgaben_ci.serve_tex") }}">LaTeX-Hilfen</a></li>
             <a class="list-group-item" href="{{ url_for("aufgaben_ci.serve_conventions") }}">Konventionen</a></li>
         {% endif %}
-        <a class="list-group-item" href="{{ url_for("aufgaben_ci.serve_project") }}">Über dieses Projekt</a></li>
 
 
     </div>
