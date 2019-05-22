@@ -1,7 +1,8 @@
 import os
 from os import path, listdir
+from urllib import request
 
-from flask import safe_join, render_template, send_from_directory, abort
+from flask import safe_join, render_template, send_from_directory, abort, url_for, request
 from git import Repo, InvalidGitRepositoryError, NoSuchPathError
 from shutil import copy
 from subprocess import run, DEVNULL
@@ -31,7 +32,8 @@ def make_all(directory):
     env["TEXMFHOME"] = str(directory.joinpath("Technisches/texmf"))
     for f in directory.glob("**/*.tex"):
         runs += 1
-        ret = run(LATEXMK_CALL + [str(f.absolute())], env=env, stdout=DEVNULL, stderr=DEVNULL, cwd=str(f.parent.absolute()))
+        ret = run(LATEXMK_CALL + [str(f.absolute())], env=env, stdout=DEVNULL, stderr=DEVNULL,
+                  cwd=str(f.parent.absolute()))
         if ret.returncode != 0:
             errors.append(str(f.relative_to(directory)))
 
@@ -50,17 +52,31 @@ def copy_rec(source, target, allowed=ALL_PATTERN):
             rel_target.mkdir(exist_ok=True)
 
 
-def serve_path(_path, static_folder):
+def serve_path(_path, static_folder, title):
     try:
         p = safe_join(static_folder, _path)
     except NotFound:
         abort(404)
 
+    if path.basename(_path):
+        title = path.basename(_path)
+
     if path.isdir(p):
         children = []
         for i in listdir(p):
-            children.append({"name": i, "path": path.join(_path, i)})
-        return render_template("aufgaben_ci/modules.html", title=path.basename(p), children=children)
+            children.append({"name": i, "path": url_for(request.endpoint, _path=path.join(_path, i)),
+                             "is_dir": path.isdir(path.join(p, i))})
+
+        if _path in ["", "/"]:
+            parent = None
+        else:
+            parent = _path
+            if parent.endswith("/"):
+                parent = parent[:-1]
+            parent = parent.rpartition("/")[0]
+            parent = url_for(request.endpoint, _path=parent)
+        return render_template("aufgaben_ci/modules.html", title=title, children=children,
+                               parent=parent)
     elif path.isfile(p):
         return send_from_directory(static_folder, _path)
     else:

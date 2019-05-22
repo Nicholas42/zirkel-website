@@ -30,15 +30,15 @@ def serve_conventions():
     return send_from_directory(bp.static_folder, "pdfs/Technisches/Konventionen.pdf")
 
 
-@bp.route("/tex/", defaults={"_path": "TeXTutorial"})
+@bp.route("/tex/", defaults={"_path": ""})
 @bp.route("/tex/<path:_path>")
 @login_required
 def serve_tex(_path):
-    return serve_path(_path, path.join(bp.static_folder, "pdfs", "Technisches"))
+    return serve_path(_path, path.join(bp.static_folder, "pdfs", "Technisches", "TeXTutorial"), "TeX-Tutorial")
 
 
 @bp.route("/modules/", defaults={"_path": ""})
 @bp.route("/modules/<path:_path>")
 @role_required("korrektor")
 def serve_module(_path):
-    return serve_path(_path, path.join(bp.static_folder, "pdfs"))
+    return serve_path(_path, path.join(bp.static_folder, "pdfs"), "Module")

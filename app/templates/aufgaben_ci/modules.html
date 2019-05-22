@@ -2,7 +2,11 @@
 
 {% block app_content %}
     <h1>{{ title }}</h1>
+    {% if parent is not none%}
+        <h5><a href="{{ parent }}">Auf</a></h5>
+    {% endif %}
     {% for i in children %}
-        <p><a href="{{ i.path }}">{{ i.name }}</a></p>
+        <p><a href="{{ i.path }}"><span class="glyphicon {% if i.is_dir %}glyphicon-folder-open
+                                        {% else %}glyphicon-file{% endif %}"></span> {{ i.name }}</a></p>
     {% endfor %}
 {% endblock %}
