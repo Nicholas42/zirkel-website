@@ -1,13 +1,11 @@
-from os import path, listdir
+from os import path
 
-from flask import current_app as app, safe_join, abort, send_from_directory, render_template
+from flask import current_app as app, send_from_directory
 from flask_login import login_required
-from werkzeug.exceptions import NotFound
 
 from app.aufgaben_ci import bp
-from app.aufgaben_ci.helpers import pull_repo, make_all, copy_rec, PDF_PATTERN
+from app.aufgaben_ci.helpers import pull_repo, make_all, copy_rec, PDF_PATTERN, serve_path
 from app.decorators import role_required
-from helpers import serve_path
 
 
 @bp.route("/pullhook", methods=["POST", "GET"])
