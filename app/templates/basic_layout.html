@@ -6,10 +6,22 @@
 {% endblock %}
 
 {% block content %}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Zirkel</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Hauptseite</a></li>
+                <li><a href="/ci/project">Über das Projekt</a></li>
+                <li><a href="/contact">Kontakt</a></li>
+            </ul>
+        </div>
+    </nav>
     <div class="container">
         {{ utils.flashed_messages() }}
-    {% block app_content %}
-    {% endblock %}
+        {% block app_content %}
+        {% endblock %}
     </div>
 {% endblock %}
 
