@@ -13,8 +13,8 @@
             </div>
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">Hauptseite</a></li>
-                <li><a href="/ci/project">Über das Projekt</a></li>
-                <li><a href="/contact">Kontakt</a></li>
+                <li><a href="{{ url_for("aufgaben_ci.serve_project") }}">Über das Projekt</a></li>
+                <li><a href="{{ url_for("main.contact") }}">Kontakt</a></li>
             </ul>
         </div>
     </nav>

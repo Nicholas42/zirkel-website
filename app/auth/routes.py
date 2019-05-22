@@ -29,7 +29,7 @@ def login():
         flash("Erfolgreich angemeldet.", category="success")
         return redirect(safe_next(request.args.get("next")))
 
-    return render_template("auth/login.html", title="Anmeldung", form=form)
+    return render_template("basic_form.html", title="Anmeldung", form=form)
 
 
 @bp.route("/logout")
@@ -58,7 +58,7 @@ def register():
         flash("Du bist jetzt registriert, %s!" % user.username, "success")
         return redirect(url_for("auth.login"))
 
-    return render_template("auth/register.html", form=form, title="Registrierung")
+    return render_template("basic_form.html", form=form, title="Registrierung")
 
 
 @bp.route("/change_password", methods=["GET", "POST"])
@@ -74,7 +74,7 @@ def change_password():
 
         return redirect(url_for("main.index"))
 
-    return render_template("auth/change_password.html", form=form, title="Passwort ändern")
+    return render_template("basic_form.html", form=form, title="Passwort ändern")
 
 
 @bp.route("/forgot_password", methods=["GET", "POST"])

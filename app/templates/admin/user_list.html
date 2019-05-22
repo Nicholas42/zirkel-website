@@ -1,21 +1,25 @@
 {% extends "basic_layout.html" %}
 
 {% block app_content %}
-    <ul>
+    <dl>
         {% for user in user_list %}
-            {{ user.username }} {% if not user.active %} inactive {% endif %}
-            <form action="/admin/ban" method="post">
-                <button type="submit" name="user" value="{{ user.id }}">Ban</button>
-            </form>
-            <form action="/admin/add_role" method="post">
-                <input type="hidden" value="{{ user.id }}" name="user_id">
-                <select name="role_id">
-                    {% for i in role_list %}
-                        <option value="{{ i.id }}">{{ i.name }}</option>
-                    {% endfor %}
-                </select>
-                <input type="submit" value="Rolle hinzufügen">
-            </form>
+            <dt>
+                {{ user.username }} {% if not user.active %} inactive {% endif %}
+            </dt>
+            <dd>
+                <form action="{{ url_for("admin.ban") }}" method="post">
+                    <button type="submit" name="user" value="{{ user.id }}">Ban</button>
+                </form>
+                <form action="{{ url_for("admin.add_role") }}" method="post">
+                    <input type="hidden" value="{{ user.id }}" name="user_id">
+                    <select name="role_id">
+                        {% for i in role_list %}
+                            <option value="{{ i.id }}">{{ i.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="Rolle hinzufügen">
+                </form>
+            </dd>
         {% endfor %}
-    </ul>
+    </dl>
 {% endblock %}

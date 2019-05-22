@@ -5,23 +5,23 @@
 
     <ul>
         {% if not current_user.is_authenticated %}
-            <li><a href="/login">Anmelden</a></li>
+            <li><a href="{{ url_for("auth.login") }}">Anmelden</a></li>
             {# <li><a href="/register">Registrieren</a></li> #}
         {% else %}
-            <li><a href="/logout">Abmelden</a></li>
-            <li><a href="/change_password">Passwort ändern</a></li>
+            <li><a href="{{ url_for("auth.logout") }}">Abmelden</a></li>
+            <li><a href="{{ url_for("auth.change_password") }}">Passwort ändern</a></li>
             {% if current_user.is_admin() %}
-                <li><a href="/admin">Admin-Panel</a></li>
+                <li><a href="{{ url_for("admin.panel") }}">Admin-Panel</a></li>
             {% endif %}
             {% if current_user.has_role("korrektor") %}
-                <li><a href="/submissions">Bearbeitungen</a></li>
-                <li><a href="/ci/modules">Module</a> </li>
+                <li><a href="{{ url_for("review.submissions") }}">Bearbeitungen</a></li>
+                <li><a href="{{ url_for("aufgaben_ci.serve_module") }}">Module</a> </li>
             {% endif %}
-            <li><a href="/upload">Lösung hochladen</a></li>
-            <li><a href="/ci/tex">LaTeX-Hilfen</a></li>
-            <li><a href="/ci/conventions">Konventionen</a></li>
+            <li><a href="{{ url_for("upload.upload") }}">Lösung hochladen</a></li>
+            <li><a href="{{ url_for("aufgaben_ci.serve_tex") }}">LaTeX-Hilfen</a></li>
+            <li><a href="{{ url_for("aufgaben_ci.serve_conventions") }}">Konventionen</a></li>
         {% endif %}
-        <li><a href="/ci/project">Über dieses Projekt</a></li>
+        <li><a href="{{ url_for("aufgaben_ci.serve_project") }}">Über dieses Projekt</a></li>
 
 
     </ul>

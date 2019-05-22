@@ -18,17 +18,17 @@
             {% for sub in submissions %}
                 {% if sub.is_open() and not sub.is_claimed() %}
                     <tr>
-                        <td><a href="/submission/{{ sub.id }}">{{ sub.id }}</a></td>
+                        <td><a href="{{ url_for("upload.submission", index=sub.id) }}">{{ sub.id }}</a></td>
                         <td>{{ sub.get_upload_time() }}</td>
                         <td><a href="{{ sub.fileurl }}">Datei</a></td>
                         <td>
-                            <form method="post" action="/claim_submission">
+                            <form method="post" action="{{ url_for("review.claim_submission") }}">
                                 <button type="submit" value="{{ sub.id }}" name="sub_id">Claimen</button>
                             </form>
                         </td>
                         {% if current_user.is_admin() %}
                             <td>
-                                <form method="post" action="/admin/delete_submission">
+                                <form method="post" action="{{ url_for("admin.delete_submission") }}">
                                     <button type="submit" value="{{ sub.id }}" name="sub_id">Löschen</button>
                                 </form>
                             </td>
@@ -58,14 +58,14 @@
             {% for sub in submissions %}
                 {% if sub.is_open() and sub.is_claimed() %}
                     <tr>
-                        <td><a href="/submission/{{ sub.id }}">{{ sub.id }}</a></td>
+                        <td><a href="{{ url_for("upload.submission", index=sub.id) }}">{{ sub.id }}</a></td>
                         <td>{{ sub.get_upload_time() }}</td>
                         <td><a href="{{ sub.fileurl }}">Datei</a></td>
                         <td>{{ sub.reviewer.username }}</td>
-                        <td><a href="/review?submission_id={{ sub.id }}">hinzufügen</a></td>
+                        <td><a href="{{ url_for("review.review", submission_id=sub.id) }}">hinzufügen</a></td>
                         {% if current_user.is_admin() %}
                             <td>
-                                <form method="post" action="/admin/delete_submission">
+                                <form method="post" action="{{ url_for("admin.delete_submission") }}">
                                     <button type="submit" value="{{ sub.id }}" name="sub_id">Löschen</button>
                                 </form>
                             </td>
@@ -95,14 +95,14 @@
             {% for sub in submissions %}
                 {% if not sub.is_open() %}
                     <tr>
-                        <td><a href="/submission/{{ sub.id }}">{{ sub.id }}</a></td>
+                        <td><a href="{{ url_for("upload.submission", index=sub.id) }}">{{ sub.id }}</a></td>
                         <td>{{ sub.get_upload_time() }}</td>
                         <td>{{ sub.review.reviewer.username }}</td>
                         <td><a href="{{ sub.fileurl }}">Datei</a></td>
                         <td><a href="{{ sub.review.fileurl }}">Datei</a></td>
                         {% if current_user.is_admin() %}
                             <td>
-                                <form method="post" action="/admin/delete_submission">
+                                <form method="post" action="{{ url_for("admin.delete_submission") }}">
                                     <button type="submit" value="{{ sub.id }}" name="sub_id">Löschen</button>
                                 </form>
                             </td>
