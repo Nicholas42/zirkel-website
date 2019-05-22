@@ -2,7 +2,8 @@ from flask import redirect, url_for, request, flash, render_template
 from flask_login import login_user, logout_user, current_user, login_required
 from app import db
 from app.auth import bp
-from app.auth.forms import LoginForm, RegistrationForm, ChangePasswordForm
+from app.auth.forms import LoginForm, RegistrationForm, ChangePasswordForm, ForgotPasswordForm, ResetPasswordForm
+from app.email import send_password_reset
 from app.helpers.route_helpers import safe_next
 from app.models import User
 from app.decorators import disable_route
@@ -74,3 +75,44 @@ def change_password():
         return redirect(url_for("main.index"))
 
     return render_template("auth/change_password.html", form=form, title="Passwort ändern")
+
+
+@bp.route("/forgot_password", methods=["GET", "POST"])
+def forgot_password():
+    if current_user.is_authenticated:
+        return redirect(url_for("main.index"))
+
+    form = ForgotPasswordForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is None:
+            flash("E-Mail nicht gefunden.", "error")
+            return render_template("basic_form.html", title="Passwort vergessen", form=form)
+
+        send_password_reset(user)
+        flash("E-Mail versandt.")
+        return redirect(url_for("auth.login"))
+
+    return render_template("basic_form.html", title="Passwort vergessen", form=form)
+
+
+@bp.route("/reset_password/<token>", methods=["GET", "POST"])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for("main.index"))
+
+    user = User.verify_reset_password_token(token)
+
+    if not user:
+        flash("Token nicht korrekt", "error")
+
+    form = ResetPasswordForm()
+
+    if form.validate_on_submit():
+        user.set_password(form.npassword.data)
+        db.session.commit()
+        flash("Neues Passwort gesetzt", "success")
+
+        return redirect(url_for("main.index"))
+
+    return render_template("basic_form.html", title="Passwort-Reset", form=form)

@@ -15,6 +15,17 @@ class LoginForm(FlaskForm):
         yield self.password
 
 
+class ForgotPasswordForm(FlaskForm):
+    email = StringField(label="E-Mail", validators=[DataRequired(), Email()])
+    submit = SubmitField(label="Neues Passwort anfordern")
+
+
+class ResetPasswordForm(FlaskForm):
+    npassword = PasswordField(label="Neues Passwort", validators=[DataRequired()])
+    npassword1 = PasswordField(label="Neues Passwort wiederholen", validators=[DataRequired(), EqualTo('npassword')])
+    submit = SubmitField(label="Neues Passwort anfordern")
+
+
 class ChangePasswordForm(FlaskForm):
     password = PasswordField(label="Altes Passwort", validators=[DataRequired()])
     npassword = PasswordField(label="Neues Passwort", validators=[DataRequired()])
