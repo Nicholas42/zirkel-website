@@ -3,6 +3,7 @@
 ssh-keyscan github.com >> ~/.ssh/known_hosts
 source venv/bin/activate
 flask db upgrade
+flask init-git run
 flask init-db roles
 flask init-db add-admin
 
