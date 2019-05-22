@@ -26,6 +26,8 @@ RUN chown -R zirkel:zirkel ./
 
 USER zirkel
 
+RUN mkdir .data
+
 EXPOSE 5000
 
 ENTRYPOINT ["./start.sh"]
