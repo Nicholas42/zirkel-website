@@ -2,8 +2,8 @@
 
 {% block app_content %}
 <h1>Adminpanel</h1>
-<ul>
-    <li><a href="{{ url_for("admin.user_list") }}">Benutzerliste</a></li>
-    <li><a href="{{ url_for("admin.create_user") }}">Benutzer erstellen</a></li>
-</ul>
+<div class="list-group">
+    <a class="list-group-item" href="{{ url_for("admin.user_list") }}">Benutzerliste</a></li>
+    <a class="list-group-item" href="{{ url_for("admin.create_user") }}">Benutzer erstellen</a></li>
+</div>
 {% endblock %}

@@ -1,6 +1,11 @@
 {% extends "bootstrap/base.html" %}
 {% import "bootstrap/utils.html" as utils %}
 
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style.css') }}">
+{% endblock %}
+
 {% block title %}
     {% if title %} {{ title }} - {% endif %} A Website
 {% endblock %}
@@ -9,12 +14,19 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Zirkel</a>
+                <a class="navbar-brand">&forall;</a>
             </div>
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">Hauptseite</a></li>
                 <li><a href="{{ url_for("aufgaben_ci.serve_project") }}">Über das Projekt</a></li>
                 <li><a href="{{ url_for("main.contact") }}">Kontakt</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for("auth.logout") }}">Abmelden</a></li>
+                {% else %}
+                    <li><a href="{{ url_for("auth.login") }}">Anmelden</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>

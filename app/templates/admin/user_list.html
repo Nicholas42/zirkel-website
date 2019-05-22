@@ -8,7 +8,7 @@
             </dt>
             <dd>
                 <form action="{{ url_for("admin.ban") }}" method="post">
-                    <button type="submit" name="user" value="{{ user.id }}">Ban</button>
+                    <button class="btn btn-link" type="submit" name="user" value="{{ user.id }}">Ban</button>
                 </form>
                 <form action="{{ url_for("admin.add_role") }}" method="post">
                     <input type="hidden" value="{{ user.id }}" name="user_id">
@@ -17,7 +17,7 @@
                             <option value="{{ i.id }}">{{ i.name }}</option>
                         {% endfor %}
                     </select>
-                    <input type="submit" value="Rolle hinzufügen">
+                    <button type="submit" class="btn">Rolle hinzufügen</button>
                 </form>
             </dd>
         {% endfor %}

@@ -2,11 +2,15 @@
 
 {% block app_content %}
     <h1>{{ title }}</h1>
-    {% if parent is not none%}
-        <h5><a href="{{ parent }}">Auf</a></h5>
+    {% if parent is not none %}
+        <div class="list-group">
+        <p><a class="list-group-item" href="{{ parent }}"><span class="glyphicon glyphicon-level-up"></span> Auf</a></p>
+        </div>
     {% endif %}
-    {% for i in children %}
-        <p><a href="{{ i.path }}"><span class="glyphicon {% if i.is_dir %}glyphicon-folder-open
+    <div class="list-group">
+        {% for i in children %}
+            <p><a class="list-group-item" href="{{ i.path }}"><span class="glyphicon {% if i.is_dir %}glyphicon-folder-open
                                         {% else %}glyphicon-file{% endif %}"></span> {{ i.name }}</a></p>
-    {% endfor %}
+        {% endfor %}
+    </div>
 {% endblock %}
