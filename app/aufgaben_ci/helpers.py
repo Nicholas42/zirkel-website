@@ -68,7 +68,7 @@ def serve_path(_path, static_folder, title):
                              "is_dir": path.isdir(path.join(p, i))})
 
         if _path in ["", "/"]:
-            parent = None
+            parent = url_for("main.index")
         else:
             parent = _path
             if parent.endswith("/"):
