@@ -1,10 +1,12 @@
-from flask import Flask
+from flask import Flask, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_required
 from flask_uploads import UploadSet, configure_uploads
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
+
+from app.decorators import disable_route
 from config import Config
 
 db = SQLAlchemy()
@@ -36,7 +38,7 @@ def build_app(conf: object = Config) -> Flask:
 
     from app.aufgaben_ci import bp as ci_bp
     app.register_blueprint(ci_bp, url_prefix="/ci")
-    app.view_functions["aufgaben_ci.static"] = login_required(ci_bp.send_static_file)
+    app.view_functions["aufgaben_ci.static"] = disable_route(lambda x: 0)
 
     from app.upload import bp as upload_bp
     app.register_blueprint(upload_bp)
