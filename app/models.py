@@ -16,6 +16,22 @@ user_roles = db.Table(
     db.Column("user_id", db.Integer, db.ForeignKey("user.id"))
 )
 
+modules_per_user = db.Table(
+    "modules_per_user",
+    db.Column("module_id", db.Integer, db.ForeignKey("module.id")),
+    db.Column("user_id", db.Integer, db.ForeignKey("user.id"))
+)
+
+
+class Module(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    path = db.Column(db.String, unique=True)
+
+    permitted_users = db.relationship("User", secondary=modules_per_user)
+
+    def is_permitted(self, user):
+        return user.has_role("korrektor") or user in self.permitted_users
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,6 +45,7 @@ class User(UserMixin, db.Model):
     next_subject = db.Column(db.String)
 
     roles = db.relationship("Role", secondary=user_roles)
+    unlocked_modules = db.relationship("Module", secondary=modules_per_user)
 
     def __init__(self, username, email, roles=None, active=True):
         self.username = username
