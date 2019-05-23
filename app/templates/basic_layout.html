@@ -1,7 +1,8 @@
 {% extends "bootstrap/base.html" %}
 {% import "bootstrap/utils.html" as utils %}
+{% block html_attribs %}{{ super() }}lang="de"{% endblock %}
 
-{% block head %}
+{% block styles %}
     {{ super() }}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style.css') }}">
 {% endblock %}
@@ -10,7 +11,7 @@
     {% if title %} {{ title }} - {% endif %} A Website
 {% endblock %}
 
-{% block content %}
+{% block navbar %}
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -30,6 +31,10 @@
             </ul>
         </div>
     </nav>
+{% endblock %}
+
+
+{% block content %}
     <div class="container">
         {{ utils.flashed_messages() }}
         {% block app_content %}
