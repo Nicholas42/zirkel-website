@@ -3,6 +3,7 @@ from os import path, listdir
 from urllib import request
 
 from flask import safe_join, render_template, send_from_directory, abort, url_for, request
+from flask_login import current_user
 from git import Repo, InvalidGitRepositoryError, NoSuchPathError
 from shutil import copy
 from subprocess import run, DEVNULL
@@ -52,7 +53,11 @@ def copy_rec(source, target, allowed=ALL_PATTERN):
             rel_target.mkdir(exist_ok=True)
 
 
-def serve_path(_path, static_folder, title):
+def has_access(url):
+    return current_user.has_role("korrektor") or current_user.has_access(url)
+
+
+def serve_path(_path, static_folder, title, ignore_access=False):
     try:
         p = safe_join(static_folder, _path)
     except NotFound:
@@ -64,8 +69,10 @@ def serve_path(_path, static_folder, title):
     if path.isdir(p):
         children = []
         for i in listdir(p):
-            children.append({"name": i, "path": url_for(request.endpoint, _path=path.join(_path, i)),
-                             "is_dir": path.isdir(path.join(p, i))})
+            new_child = {"name": i, "url": url_for(request.endpoint, _path=path.join(_path, i)),
+                         "is_dir": path.isdir(path.join(p, i))}
+            new_child["access"] = ignore_access or new_child["is_dir"] or has_access(_path)
+            children.append(new_child)
 
         if _path in ["", "/"]:
             parent = url_for("main.index")
@@ -78,6 +85,9 @@ def serve_path(_path, static_folder, title):
         return render_template("aufgaben_ci/modules.html", title=title, children=children,
                                parent=parent)
     elif path.isfile(p):
-        return send_from_directory(static_folder, _path)
+        if ignore_access or has_access(url_for(request.endpoint, _path=_path)):
+            return send_from_directory(static_folder, _path)
+        else:
+            abort(403)
     else:
         abort(404)

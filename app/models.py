@@ -97,6 +97,10 @@ class User(UserMixin, db.Model):
             return
         return User.query.get(id)
 
+    def has_access(self, p):
+        mod = Module.query.filter_by(path=p).first()
+        return mod is not None and mod in self.unlocked_modules
+
 
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)

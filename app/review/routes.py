@@ -1,11 +1,13 @@
+from os import path
+
 from flask import render_template, redirect, url_for, request, flash
 from flask_login import current_user
 
 from app import db, reviews
 from app.decorators import role_required
 from app.review import bp
-from app.models import Submission, Review
-from app.review.forms import ReviewUploadForm
+from app.models import Submission, Review, Module, User
+from app.review.forms import ReviewUploadForm, UnlockModuleForm
 
 
 @bp.before_request
@@ -50,3 +52,28 @@ def review():
         return redirect(url_for("review.submissions"))
 
     return render_template("review/review_form.html", form=form, title="Bewertung hochladen")
+
+
+@bp.route("/unlock_module", methods=["GET", "POST"])
+def unlock_module():
+    form = UnlockModuleForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.user_name.data).first()
+        if user is None:
+            flash("Benutzer existiert nicht", "error")
+            return render_template("basic_form.html", title="Modul freigeben", form=form)
+
+        mod = Module.query.filter_by(path=form.module_path.data).first()
+        if mod is None:
+            mod = Module(path=form.module_path.data)
+
+        mod.permitted_users.append(user)
+        db.session.add(mod)
+        db.session.commit()
+
+        flash("Module freigegeben")
+        return redirect(path.dirname(mod.path))
+
+    form.module_path.data = request.args.get("module_path", "")
+
+    return render_template("basic_form.html", title="Modul freigeben", form=form)

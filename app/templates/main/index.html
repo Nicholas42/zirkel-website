@@ -13,8 +13,8 @@
             {% endif %}
             {% if current_user.has_role("korrektor") %}
                 <a class="list-group-item" href="{{ url_for("review.submissions") }}">Bearbeitungen</a></li>
-                <a class="list-group-item" href="{{ url_for("aufgaben_ci.serve_module") }}">Module</a> </li>
             {% endif %}
+            <a class="list-group-item" href="{{ url_for("aufgaben_ci.serve_module") }}">Module</a> </li>
             <a class="list-group-item" href="{{ url_for("upload.upload") }}">Lösung hochladen</a></li>
             <a class="list-group-item" href="{{ url_for("aufgaben_ci.serve_tex") }}">LaTeX-Hilfen</a></li>
             <a class="list-group-item" href="{{ url_for("aufgaben_ci.serve_conventions") }}">Konventionen</a></li>

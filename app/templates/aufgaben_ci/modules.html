@@ -3,14 +3,26 @@
 {% block app_content %}
     <h1>{{ title }}</h1>
     {% if parent is not none %}
-        <div class="list-group">
-        <p><a class="list-group-item" href="{{ parent }}"><span class="glyphicon glyphicon-level-up"></span> Auf</a></p>
+        <div class="list-group row">
+            <p><a class="list-group-item col-xs" href="{{ parent }}"><span class="glyphicon glyphicon-level-up"></span>
+                Auf</a>
+            </p>
         </div>
     {% endif %}
-    <div class="list-group">
+    <div class="list-group row">
         {% for i in children %}
-            <p><a class="list-group-item" href="{{ i.path }}"><span class="glyphicon {% if i.is_dir %}glyphicon-folder-open
-                                        {% else %}glyphicon-file{% endif %}"></span> {{ i.name }}</a></p>
+            {% if i.is_dir %}
+                <a class="list-group-item col-xs-12" href="{{ i.url }}"><span
+                        class="glyphicon glyphicon-folder-open"></span> {{ i.name }}</a>
+            {% elif current_user.has_role("korrektor") %}
+                <a class="list-group-item col-xs-11 left-side" href="{{ i.url }}"><span
+                        class="glyphicon glyphicon-file"></span> {{ i.name }}</a>
+                <a class="list-group-item col-xs-1 right-side"
+                   href="{{ url_for("review.unlock_module", module_path=i.url) }}">Freigeben</a>
+            {% else %}
+                <a class="list-group-item col-xs-12" href="{{ i.url }}"><span
+                        class="glyphicon glyphicon-file"></span> {{ i.name }}</a>
+            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}

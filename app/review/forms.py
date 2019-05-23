@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
+from wtforms import TextField
 from wtforms.fields import FileField, IntegerField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, ValidationError
 from app.models import Submission
+from app.helpers.form_helpers import validate_exists
 
 
 class ReviewUploadForm(FlaskForm):
@@ -14,3 +16,11 @@ class ReviewUploadForm(FlaskForm):
     def validate_submission_id(self, field):
         if Submission.query.get(field.data) is None:
             raise ValidationError("Bearbeitungsid existiert nicht.")
+
+
+class UnlockModuleForm(FlaskForm):
+    module_path = TextField("Module", validators=[DataRequired()])
+    user_name = TextField("Benutzername",
+                          validators=[DataRequired(), validate_exists("username", "Benutzer existiert nicht.")])
+
+    submit = SubmitField("Freigeben")
