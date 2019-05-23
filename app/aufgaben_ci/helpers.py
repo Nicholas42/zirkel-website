@@ -71,7 +71,8 @@ def serve_path(_path, static_folder, title, ignore_access=False):
         for i in listdir(p):
             new_child = {"name": i, "url": url_for(request.endpoint, _path=path.join(_path, i)),
                          "is_dir": path.isdir(path.join(p, i))}
-            new_child["access"] = ignore_access or new_child["is_dir"] or has_access(_path)
+            print(new_child["url"])
+            new_child["access"] = ignore_access or new_child["is_dir"] or has_access(new_child["url"])
             children.append(new_child)
 
         if _path in ["", "/"]:

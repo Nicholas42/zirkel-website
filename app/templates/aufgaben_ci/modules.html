@@ -20,7 +20,7 @@
                 <a class="list-group-item col-xs-1 right-side"
                    href="{{ url_for("review.unlock_module", module_path=i.url) }}">Freigeben</a>
             {% else %}
-                <a class="list-group-item col-xs-12" href="{{ i.url }}"><span
+                <a class="list-group-item col-xs-12 {% if not i.access %}disabled{% endif %}" {% if i.access %}href="{{ i.url }}"{% endif %}><span
                         class="glyphicon glyphicon-file"></span> {{ i.name }}</a>
             {% endif %}
         {% endfor %}
