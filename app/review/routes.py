@@ -77,3 +77,11 @@ def unlock_module():
     form.module_path.data = request.args.get("module_path", "")
 
     return render_template("basic_form.html", title="Modul freigeben", form=form)
+
+
+@bp.route("/user_list")
+def user_list():
+    all_users = User.query.all()
+
+    return render_template("review/user_list.html", all_users=all_users)
+

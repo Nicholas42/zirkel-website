@@ -1,0 +1,23 @@
+{% extends "basic_layout.html" %}
+
+{% block title %}Benutzerübersicht{% endblock %}
+
+{% block app_content %}
+    <h1>Benutzerübersicht</h1>
+
+    <div class="container">
+        {% for i in all_users %}
+            <div class="row">
+                <div class="col-xs-4">
+                    <a href="{{ url_for("review.show_user", uid=i.id) }}">{{ i.username }}</a>
+                </div>
+                <div class="col-xs-4">
+                    {{ i.get_next_module("-") }}
+                </div>
+                <div class="col-xs-4">
+                    {{ i.get_next_sub("-") }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
