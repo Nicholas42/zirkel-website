@@ -85,3 +85,9 @@ def user_list():
 
     return render_template("review/user_list.html", all_users=all_users)
 
+
+@bp.route("/show_user/<uid>")
+def show_user(uid):
+    user = User.query.get_or_404(uid)
+
+    return render_template("review/show_user.html", user=user)
