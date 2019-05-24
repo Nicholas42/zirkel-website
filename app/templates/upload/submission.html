@@ -2,6 +2,7 @@
 
 {% block title %}Bearbeitung {{ sub.id }}{% endblock %}
 
+{% set parent=url_for("upload.my_submissions") %}
 {% block app_content %}
     <h1>Bearbeitung {{ sub.id }}</h1>
     <p>Abgegeben am {{ sub.get_upload_time() }} von {{ sub.author.username }}</p>

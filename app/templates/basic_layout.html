@@ -21,6 +21,9 @@
                 <li class="active"><a href="/">Hauptseite</a></li>
                 <li><a href="{{ url_for("aufgaben_ci.serve_project") }}">Über das Projekt</a></li>
                 <li><a href="{{ url_for("main.contact") }}">Kontakt</a></li>
+                {% if parent %}
+                    <li><a href="{{ parent }}"><span class="glyphicon glyphicon-level-up"></span> Aufwärts</a></li>
+                {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}

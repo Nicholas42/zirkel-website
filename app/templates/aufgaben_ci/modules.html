@@ -2,13 +2,6 @@
 
 {% block app_content %}
     <h1>{{ title }}</h1>
-    {% if parent is not none %}
-        <div class="list-group row">
-            <p><a class="list-group-item col-xs" href="{{ parent }}"><span class="glyphicon glyphicon-level-up"></span>
-                Auf</a>
-            </p>
-        </div>
-    {% endif %}
     <div class="list-group row">
         {% for i in children %}
             {% if i.is_dir %}
