@@ -5,6 +5,7 @@ from app import db, submissions, reviews
 from app.models import Submission, Review
 from app.upload import bp
 from app.upload.forms import SubmissionForm
+from app.upload.tables import SubTable
 
 
 @bp.route("/upload", methods=["POST", "GET"])
@@ -68,6 +69,6 @@ def submission(index):
 @bp.route("/my_submissions")
 @login_required
 def my_submissions():
-    subs = Submission.query.filter_by(author_id=current_user.id)
+    subs = Submission.query.filter_by(author_id=current_user.id).all()
 
-    return render_template("upload/my_submissions.html", subs=subs)
+    return render_template("upload/my_submissions.html", subs=SubTable(subs))
