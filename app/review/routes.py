@@ -5,9 +5,10 @@ from flask_login import current_user
 
 from app import db, reviews
 from app.decorators import role_required
-from app.review import bp
 from app.models import Submission, Review, Module, User
+from app.review import bp
 from app.review.forms import ReviewUploadForm, UnlockModuleForm
+from app.review.tables import ActiveTable, UnderReviewTable, ClosedTable, UserListTable
 
 
 @bp.before_request
@@ -19,9 +20,9 @@ def before_request():
 @bp.route("/submissions")
 def submissions():
     all_subs = Submission.query.all()
-    active = filter(lambda x: not x.is_claimed() and x.is_open(), all_subs)
-    under_review = filter(lambda x: x.is_claimed() and x.is_open(), all_subs)
-    closed = filter(lambda x: not x.is_open(), all_subs)
+    active = ActiveTable(filter(lambda x: not x.is_claimed() and x.is_open(), all_subs))
+    under_review = UnderReviewTable(filter(lambda x: x.is_claimed() and x.is_open(), all_subs))
+    closed = ClosedTable(filter(lambda x: not x.is_open(), all_subs))
     return render_template("review/index.html", active=active, under_review=under_review, closed=closed)
 
 
@@ -84,7 +85,7 @@ def unlock_module():
 
 @bp.route("/user_list")
 def user_list():
-    all_users = User.query.all()
+    all_users = UserListTable(User.query.all())
 
     return render_template("review/user_list.html", all_users=all_users)
 

@@ -3,81 +3,9 @@
 {% block app_content %}
     <h1>Aktuelle Bearbeitungen</h1>
     <h3>Offene Bearbeitungen</h3>
-    <div class="container">
-        <div class="row first-row">
-            <div class="col-xs-1">von</div>
-            <div class="col-xs-2">Hochgeladen</div>
-            <div class="col-xs-2">Datei</div>
-            <div class="col-xs-2">Claimen</div>
-            {% if current_user.is_admin() %}
-                <div class="col-xs-2">Löschen</div>
-            {% endif %}
-        </div>
-        {% for i in active %}
-            <div class="row further-row">
-                <div class="col-xs-1">{{ i.author.username }}</div>
-                <div class="col-xs-2">{{ i.get_upload_time() }}</div>
-                <div class="col-xs-2"><a href="{{ i.fileurl }}">Url</a></div>
-                <div class="col-xs-2"><a href="{{ url_for("review.claim_submission", sub_id=i.id) }}">Claimen</a></div>
-                {% if current_user.is_admin() %}
-                    <div class="col-xs-2"><a href="{{ url_for("admin.delete_submission", sub_id=i.id) }}">Löschen</a>
-                    </div>
-                {% endif %}
-            </div>
-        {% endfor %}
-    </div>
-
+    {{ active }}
     <h3>Bearbeitungen unter Korrektur</h3>
-    <div class="container">
-        <div class="row first-row">
-            <div class="col-xs-1">von</div>
-            <div class="col-xs-2">Hochgeladen</div>
-            <div class="col-xs-2">Datei</div>
-            <div class="col-xs-2">Korrektor</div>
-            <div class="col-xs-2">Korrektur hinzufügen</div>
-            {% if current_user.is_admin() %}
-                <div class="col-xs-2">Löschen</div>
-            {% endif %}
-        </div>
-        {% for i in under_review %}
-            <div class="row further-row">
-                <div class="col-xs-1">{{ i.author.username }}</div>
-                <div class="col-xs-2">{{ i.get_upload_time() }}</div>
-                <div class="col-xs-2"><a href="{{ i.fileurl }}">Url</a></div>
-                <div class="col-xs-2">{{ i.reviewer.username }}</div>
-                <div class="col-xs-2"><a href="{{ url_for("review.review", sub_id=i.id) }}">hinzufügen</a></div>
-                {% if current_user.is_admin() %}
-                    <div class="col-xs-2"><a href="{{ url_for("admin.delete_submission", sub_id=i.id) }}">Löschen</a>
-                    </div>
-                {% endif %}
-            </div>
-        {% endfor %}
-    </div>
-
+    {{ under_review }}
     <h3>Korrigierte Bearbeitungen</h3>
-    <div class="container">
-        <div class="row first-row">
-            <div class="col-xs-1">von</div>
-            <div class="col-xs-2">Hochgeladen</div>
-            <div class="col-xs-2">Datei</div>
-            <div class="col-xs-2">Korrektor</div>
-            <div class="col-xs-2">Korrektur</div>
-            {% if current_user.is_admin() %}
-                <div class="col-xs-2">Löschen</div>
-            {% endif %}
-        </div>
-        {% for i in closed %}
-            <div class="row further-row">
-                <div class="col-xs-1">{{ i.author.username }}</div>
-                <div class="col-xs-2">{{ i.get_upload_time() }}</div>
-                <div class="col-xs-2"><a href="{{ i.fileurl }}">Url</a></div>
-                <div class="col-xs-2">{{ i.reviewer.username }}</div>
-                <div class="col-xs-2"><a href="{{ i.review.fileurl }}">Url</a></div>
-                {% if current_user.is_admin() %}
-                    <div class="col-xs-2"><a href="{{ url_for("admin.delete_submission", sub_id=i.id) }}">Löschen</a>
-                    </div>
-                {% endif %}
-            </div>
-        {% endfor %}
-    </div>
+    {{ closed }}
 {% endblock %}
