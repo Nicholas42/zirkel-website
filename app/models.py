@@ -145,6 +145,14 @@ class Submission(db.Model):
     def is_claimed(self):
         return self.reviewer is not None
 
+    def status(self):
+        if self.is_open() and not self.is_claimed():
+            return "offen"
+        elif self.is_open() and self.is_claimed():
+            return "wird korrigiert"
+        else:
+            return "korrigiert"
+
     def get_upload_time(self):
         return self.upload_time.strftime("%d.%m.%Y %H:%M")
 

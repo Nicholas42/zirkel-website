@@ -4,9 +4,12 @@
 
 {% block app_content %}
     <h1>Bearbeitung {{ sub.id }}</h1>
-    <h5>Abgegeben am {{ sub.get_upload_time() }}</h5>
-    <h5>Von {{ sub.author.username }}</h5>
-    <h5><a href={{ sub.fileurl }}>Datei</a></h5>
-    <h5>Notizen:</h5>
+    <p>Abgegeben am {{ sub.get_upload_time() }} von {{ sub.author.username }}</p>
+    <p><b>Status:</b> {{ sub.status() }}</p>
+    {% if sub.points is not none %}
+        <p><b>Punkte:</b> {{ sub.points }}</p>
+    {% endif %}
+    <p><b><a href={{ sub.fileurl }}>Datei</a></b></p>
+    <p><b>Notizen:</b></p>
     <p>{{ sub.notes }}</p>
 {% endblock %}
