@@ -127,8 +127,6 @@ class Submission(db.Model):
     filename = db.Column(db.String)
     fileurl = db.Column(db.String)
 
-    points = db.Column(db.Integer)
-
     # Foreign Keys
     reviewer_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     author_id = db.Column(db.Integer, db.ForeignKey("user.id"))
@@ -167,6 +165,7 @@ class Review(db.Model):
 
     reviewer = db.relationship("User", foreign_keys=[reviewer_id])
 
+    points = db.Column(db.Float)
     notes = db.Column(db.String)
     filename = db.Column(db.String)
     fileurl = db.Column(db.String)

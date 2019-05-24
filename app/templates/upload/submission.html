@@ -8,7 +8,7 @@
     <p>Abgegeben am {{ sub.get_upload_time() }} von {{ sub.author.username }}</p>
     <p><b>Status:</b> {{ sub.status() }}</p>
     {% if sub.points is not none %}
-        <p><b>Punkte:</b> {{ sub.points }}</p>
+        <p><b>Punkte:</b> {{ sub.review.points }}</p>
     {% endif %}
     <p><b><a href={{ sub.fileurl }}>Datei</a></b></p>
     <p><b>Notizen:</b></p>
