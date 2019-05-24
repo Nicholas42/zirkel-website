@@ -18,25 +18,28 @@ def before_request():
 
 @bp.route("/submissions")
 def submissions():
-    return render_template("review/index.html", submissions=Submission.query.all())
+    all_subs = Submission.query.all()
+    active = filter(lambda x: not x.is_claimed() and x.is_open(), all_subs)
+    under_review = filter(lambda x: x.is_claimed() and x.is_open(), all_subs)
+    closed = filter(lambda x: not x.is_open(), all_subs)
+    return render_template("review/index.html", active=active, under_review=under_review, closed=closed)
 
 
-@bp.route("/claim_submission", methods=["POST"])
+@bp.route("/claim_submission")
 def claim_submission():
-    sub = Submission.query.get(request.form["sub_id"])
-    sub.reviewer = current_user
+    sub = Submission.query.get_or_404(request.args.get("sub_id"))
+
+    sub.reviewer = current_user;
 
     db.session.add(sub)
     db.session.commit()
-    print(sub.reviewer)
-    print(sub.is_claimed())
 
     return redirect(url_for("review.submissions"))
 
 
 @bp.route("/review", methods=["GET", "POST"])
 def review():
-    form = ReviewUploadForm(submission_id=request.args.get("submission_id", None))
+    form = ReviewUploadForm(submission_id=request.args.get("sub_id", None))
     if form.validate_on_submit():
         filename = reviews.save(request.files["review_file"])
         fileurl = reviews.url(filename)

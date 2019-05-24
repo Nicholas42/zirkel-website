@@ -3,114 +3,81 @@
 {% block app_content %}
     <h1>Aktuelle Bearbeitungen</h1>
     <h3>Offene Bearbeitungen</h3>
-    <table class="table">
-        <thead>
-        <th>Bearbeitungsid</th>
-        <th>Hochgeladen am</th>
-        <th>Url</th>
-        <th>Review</th>
-        {% if current_user.is_admin() %}
-            <th>Löschen</th>
-        {% endif %}
-        </thead>
-        <tbody>
-        {% if submissions %}
-            {% for sub in submissions %}
-                {% if sub.is_open() and not sub.is_claimed() %}
-                    <tr>
-                        <td><a href="{{ url_for("upload.submission", index=sub.id) }}">{{ sub.id }}</a></td>
-                        <td>{{ sub.get_upload_time() }}</td>
-                        <td><a href="{{ sub.fileurl }}">Datei</a></td>
-                        <td>
-                            <form method="post" action="{{ url_for("review.claim_submission") }}">
-                                <button class="btn btn-link" type="submit" value="{{ sub.id }}" name="sub_id">Claimen</button>
-                            </form>
-                        </td>
-                        {% if current_user.is_admin() %}
-                            <td>
-                                <form method="post" action="{{ url_for("admin.delete_submission") }}">
-                                    <button class="btn btn-link" type="submit" value="{{ sub.id }}" name="sub_id">Löschen</button>
-                                </form>
-                            </td>
-                        {% endif %}
-                    </tr>
+    <div class="container">
+        <div class="row first-row">
+            <div class="col-xs-1">von</div>
+            <div class="col-xs-2">Hochgeladen</div>
+            <div class="col-xs-2">Datei</div>
+            <div class="col-xs-2">Claimen</div>
+            {% if current_user.is_admin() %}
+                <div class="col-xs-2">Löschen</div>
+            {% endif %}
+        </div>
+        {% for i in active %}
+            <div class="row further-row">
+                <div class="col-xs-1">{{ i.author.username }}</div>
+                <div class="col-xs-2">{{ i.get_upload_time() }}</div>
+                <div class="col-xs-2"><a href="{{ i.fileurl }}">Url</a></div>
+                <div class="col-xs-2"><a href="{{ url_for("review.claim_submission", sub_id=i.id) }}">Claimen</a></div>
+                {% if current_user.is_admin() %}
+                    <div class="col-xs-2"><a href="{{ url_for("admin.delete_submission", sub_id=i.id) }}">Löschen</a>
+                    </div>
                 {% endif %}
-            {% endfor %}
-        {% endif %}
-        </tbody>
-    </table>
+            </div>
+        {% endfor %}
+    </div>
 
-
-    <h3>Bearbeitungen, die zur Zeit reviewed werden.</h3>
-    <table class="table">
-        <thead>
-        <th>Bearbeitungsid</th>
-        <th>Hochgeladen am</th>
-        <th>Url</th>
-        <th>Reviewer</th>
-        <th>Review</th>
-        {% if current_user.is_admin() %}
-            <th>Löschen</th>
-        {% endif %}
-        </thead>
-        <tbody>
-        {% if submissions %}
-            {% for sub in submissions %}
-                {% if sub.is_open() and sub.is_claimed() %}
-                    <tr>
-                        <td><a href="{{ url_for("upload.submission", index=sub.id) }}">{{ sub.id }}</a></td>
-                        <td>{{ sub.get_upload_time() }}</td>
-                        <td><a href="{{ sub.fileurl }}">Datei</a></td>
-                        <td>{{ sub.reviewer.username }}</td>
-                        <td><a href="{{ url_for("review.review", submission_id=sub.id) }}">hinzufügen</a></td>
-                        {% if current_user.is_admin() %}
-                            <td>
-                                <form method="post" action="{{ url_for("admin.delete_submission") }}">
-                                    <button class="btn btn-link" type="submit" value="{{ sub.id }}" name="sub_id">Löschen</button>
-                                </form>
-                            </td>
-                        {% endif %}
-                    </tr>
+    <h3>Bearbeitungen unter Korrektur</h3>
+    <div class="container">
+        <div class="row first-row">
+            <div class="col-xs-1">von</div>
+            <div class="col-xs-2">Hochgeladen</div>
+            <div class="col-xs-2">Datei</div>
+            <div class="col-xs-2">Korrektor</div>
+            <div class="col-xs-2">Korrektur hinzufügen</div>
+            {% if current_user.is_admin() %}
+                <div class="col-xs-2">Löschen</div>
+            {% endif %}
+        </div>
+        {% for i in under_review %}
+            <div class="row further-row">
+                <div class="col-xs-1">{{ i.author.username }}</div>
+                <div class="col-xs-2">{{ i.get_upload_time() }}</div>
+                <div class="col-xs-2"><a href="{{ i.fileurl }}">Url</a></div>
+                <div class="col-xs-2">{{ i.reviewer.username }}</div>
+                <div class="col-xs-2"><a href="{{ url_for("review.review", sub_id=i.id) }}">hinzufügen</a></div>
+                {% if current_user.is_admin() %}
+                    <div class="col-xs-2"><a href="{{ url_for("admin.delete_submission", sub_id=i.id) }}">Löschen</a>
+                    </div>
                 {% endif %}
-            {% endfor %}
-        {% endif %}
-        </tbody>
-    </table>
+            </div>
+        {% endfor %}
+    </div>
 
     <h3>Korrigierte Bearbeitungen</h3>
-
-    <table class="table">
-        <thead>
-        <th>Bearbeitungsid</th>
-        <th>Hochgeladen am</th>
-        <th>Korrektor</th>
-        <th>Url</th>
-        <th>Review</th>
-        {% if current_user.is_admin() %}
-            <th>Löschen</th>
-        {% endif %}
-        </thead>
-        <tbody>
-        {% if submissions %}
-            {% for sub in submissions %}
-                {% if not sub.is_open() %}
-                    <tr>
-                        <td><a href="{{ url_for("upload.submission", index=sub.id) }}">{{ sub.id }}</a></td>
-                        <td>{{ sub.get_upload_time() }}</td>
-                        <td>{{ sub.review.reviewer.username }}</td>
-                        <td><a href="{{ sub.fileurl }}">Datei</a></td>
-                        <td><a href="{{ sub.review.fileurl }}">Datei</a></td>
-                        {% if current_user.is_admin() %}
-                            <td>
-                                <form method="post" action="{{ url_for("admin.delete_submission") }}">
-                                    <button class="btn btn-link" type="submit" value="{{ sub.id }}" name="sub_id">Löschen</button>
-                                </form>
-                            </td>
-                        {% endif %}
-                    </tr>
+    <div class="container">
+        <div class="row first-row">
+            <div class="col-xs-1">von</div>
+            <div class="col-xs-2">Hochgeladen</div>
+            <div class="col-xs-2">Datei</div>
+            <div class="col-xs-2">Korrektor</div>
+            <div class="col-xs-2">Korrektur</div>
+            {% if current_user.is_admin() %}
+                <div class="col-xs-2">Löschen</div>
+            {% endif %}
+        </div>
+        {% for i in closed %}
+            <div class="row further-row">
+                <div class="col-xs-1">{{ i.author.username }}</div>
+                <div class="col-xs-2">{{ i.get_upload_time() }}</div>
+                <div class="col-xs-2"><a href="{{ i.fileurl }}">Url</a></div>
+                <div class="col-xs-2">{{ i.reviewer.username }}</div>
+                <div class="col-xs-2"><a href="{{ i.review.fileurl }}">Url</a></div>
+                {% if current_user.is_admin() %}
+                    <div class="col-xs-2"><a href="{{ url_for("admin.delete_submission", sub_id=i.id) }}">Löschen</a>
+                    </div>
                 {% endif %}
-            {% endfor %}
-        {% endif %}
-        </tbody>
-    </table>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

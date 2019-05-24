@@ -1,6 +1,14 @@
 {# Renders a form #}
-{% import "bootstrap/wtf.html" as wtf%}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% macro render_form(form, enctype="") -%}
     {{ wtf.quick_form(form) }}
+{% endmacro %}
+
+{% macro link_button(action, text, name, value=none) -%}
+    <form method="post" action="{{ action }}">
+        <button class="btn btn-link" type="submit" {% if value %}value="{{ value }}"{% endif %}
+                name="{{ name }}">{{ text }}
+        </button>
+    </form>
 {% endmacro %}

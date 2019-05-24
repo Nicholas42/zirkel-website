@@ -76,9 +76,9 @@ def create_user():
     return render_template("basic_form.html", form=form, title="Erstelle Benutzer")
 
 
-@bp.route("/delete_submission", methods=["POST"])
+@bp.route("/delete_submission")
 def delete_submission():
-    submission = Submission.query.get(request.form["sub_id"])
+    submission = Submission.query.get_or_404(request.args.get("sub_id", None))
 
     if submission is None:
         flash("Bearbeitungsid nicht vorhanden.", "error")
@@ -93,4 +93,4 @@ def delete_submission():
     db.session.commit()
 
     flash("Bearbeitung entfernt.", "success")
-    return redirect(safe_next(request.args.get("next"), default="review.submission"))
+    return redirect(safe_next(request.args.get("next"), default="review.submissions"))

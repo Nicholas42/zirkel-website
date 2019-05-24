@@ -1,11 +1,10 @@
 from flask import request, flash, redirect, url_for, render_template, send_from_directory, abort, current_app
 from flask_login import login_required, current_user
 
-from app import db, submissions
-from app.models import Submission
+from app import db, submissions, reviews
+from app.models import Submission, Review
 from app.upload import bp
 from app.upload.forms import SubmissionForm
-from app.decorators import role_required
 
 
 @bp.route("/upload", methods=["POST", "GET"])
@@ -31,16 +30,30 @@ def upload():
     return render_template("upload/submit.html", form=form)
 
 
+@bp.route("/uploads/reviews/<filename>")
+@login_required
+def serve_review(filename):
+    review = Review.query.filter_by(filename=filename).first_or_404()
+
+    if not current_user.has_role("korrektor") and not review.submission.author == current_user:
+        abort(403)
+
+    return send_from_directory(reviews.config.destination, filename)
+
+
 @bp.route("/uploads/submissions/<filename>")
-@role_required("korrektor")
-def serve_file(filename):
-    if Submission.query.filter_by(filename=filename).first() is None:
-        abort(404)
+@login_required
+def serve_submission(filename):
+    sub = Submission.query.filter_by(filename=filename).first_or_404()
+
+    if not current_user.has_role("korrektor") and not sub.author == current_user:
+        abort(403)
 
     return send_from_directory(submissions.config.destination, filename)
 
 
 @bp.route("/submission/<int:index>")
+@login_required
 def submission(index):
     sub = Submission.query.get(index)
     if sub is None:
