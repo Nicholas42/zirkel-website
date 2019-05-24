@@ -47,7 +47,8 @@ def review():
 
         submission = Submission.query.get(form.submission_id.data)
 
-        rev = Review(reviewer_id=current_user.get_id(), notes=form.notes.data, filename=filename, fileurl=fileurl)
+        rev = Review(reviewer_id=current_user.get_id(), notes=form.notes.data, filename=filename, fileurl=fileurl,
+                     points=form.points.data)
         rev.submission = submission
         db.session.add(rev)
         db.session.commit()
