@@ -15,6 +15,7 @@ def pullhook():
     pull_repo(git_path, origin_url)
     ret = make_all(git_path)
     copy_rec(git_path, path.join(bp.static_folder, "pdfs"), PDF_PATTERN)
+    copy_rec(git_path, path.join(bp.static_folder, "pdfs"), "**/beispiel.tex")
 
     return "\n".join(["Done, %s runs, %s errors in:" % (ret[0], len(ret[1]))] + ret[1])
 
