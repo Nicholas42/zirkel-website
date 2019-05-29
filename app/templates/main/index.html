@@ -3,24 +3,37 @@
 {% block app_content %}
     <h1>Hallo{% if current_user.username %}, {{ current_user.username }}.{% endif %}</h1>
 
-    <div class="list-group">
-        {% if not current_user.is_authenticated %}
-        {% else %}
-            <a class="list-group-item" href="{{ url_for("auth.change_password") }}">Passwort ändern</a></li>
-            {% if current_user.is_admin() %}
+    {% if not current_user.is_authenticated %}
+        <div class="list-group ">
+            <a class="list-group-item" href="{{ url_for("auth.forgot_password") }}">Passwort vergessen</a>
+        </div>
+    {% else %}
+        {% if current_user.is_admin() %}
+            <h4>Adminbereich</h4>
+            <div class="list-group">
                 <a class="list-group-item" href="{{ url_for("admin.panel") }}">Admin-Panel</a></li>
-            {% endif %}
-            {% if current_user.has_role("korrektor") %}
-                <a class="list-group-item" href="{{ url_for("review.user_list") }}">Benutzer</a></li>
+            </div>
+        {% endif %}
+        {% if current_user.has_role("korrektor") %}
+            <h4>Korrektorenbereich</h4>
+            <div class="list-group ">
+                <a class="list-group-item" href="{{ url_for("review.user_list") }}">Benutzerübersicht</a></li>
                 <a class="list-group-item" href="{{ url_for("review.submissions") }}">Bearbeitungen</a></li>
-            {% endif %}
-            <a class="list-group-item" href="{{ url_for("upload.my_submissions") }}">Meine Abgaben</a> </li>
-            <a class="list-group-item" href="{{ url_for("aufgaben_ci.serve_module") }}">Module</a> </li>
+            </div>
+        {% endif %}
+        <h4>Abgaben</h4>
+        <div class="list-group ">
             <a class="list-group-item" href="{{ url_for("upload.upload") }}">Lösung hochladen</a></li>
+            <a class="list-group-item" href="{{ url_for("upload.my_submissions") }}">Meine Abgaben</a> </li>
+        </div>
+        <h4>Resource</h4>
+        <div class="list-group ">
+            <a class="list-group-item" href="{{ url_for("aufgaben_ci.serve_module") }}">Module</a> </li>
             <a class="list-group-item" href="{{ url_for("aufgaben_ci.serve_tex") }}">LaTeX-Hilfen</a></li>
             <a class="list-group-item" href="{{ url_for("aufgaben_ci.serve_conventions") }}">Konventionen</a></li>
-        {% endif %}
-
-
-    </div>
+        </div>
+        <div class="list-group ">
+            <a class="list-group-item" href="{{ url_for("auth.change_password") }}">Passwort ändern</a></li>
+        </div>
+    {% endif %}
 {% endblock %}
