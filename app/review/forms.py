@@ -10,7 +10,7 @@ class ReviewUploadForm(FlaskForm):
     submission_id = IntegerField("Bearbeitungsid", validators=[DataRequired(),
                                                                validate_exists("id", "Bearbeitung existiert nicht.",
                                                                                Submission)])
-    points = IntegerField("Punkte", validators=[DataRequired()])
+    points = FloatField("Punkte", validators=[DataRequired()])
     notes = TextAreaField("Anmerkungen (privat)")
     review_file = FileField("Bewertungsdatei", validators=[DataRequired()])
 
