@@ -2,9 +2,10 @@ from flask_table import Table, LinkCol, Col, OptCol
 
 from app.helpers.table_helpers import IdentityDict
 
+
 class SubTable(Table):
     classes = ["fullwidth"]
-    details = LinkCol("Details", "upload.submission", url_kwargs={"index": "id"})
+    details = LinkCol("Details", "upload.submission", url_kwargs={"index": "id"}, text_fallback="Url")
     status = OptCol("Status", choices=IdentityDict())
     points = Col("Punkte", attr="review.points")
 

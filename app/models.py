@@ -101,13 +101,13 @@ class User(UserMixin, db.Model):
         mod = Module.query.filter_by(path=p).first()
         return mod is not None and mod in self.unlocked_modules
 
-    def get_next_module(self, alt):
+    def get_next_module(self, alt=""):
         if self.next_module:
             return self.next_module.strftime("%d.%m.%Y")
         else:
             return alt
 
-    def get_next_sub(self, alt):
+    def get_next_sub(self, alt=""):
         if self.next_sub:
             return self.next_sub.strftime("%d.%m.%Y")
         else:

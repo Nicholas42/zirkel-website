@@ -9,6 +9,7 @@ from app.models import Submission, Review, Module, User
 from app.review import bp
 from app.review.forms import ReviewUploadForm, UnlockModuleForm
 from app.review.tables import ActiveTable, UnderReviewTable, ClosedTable, UserListTable
+from app.upload.tables import SubTable
 
 
 @bp.before_request
@@ -95,4 +96,6 @@ def user_list():
 def show_user(uid):
     user = User.query.get_or_404(uid)
 
-    return render_template("review/show_user.html", user=user)
+    subs = Submission.query.filter_by(author=user)
+
+    return render_template("review/show_user.html", user=user, table=SubTable(subs))

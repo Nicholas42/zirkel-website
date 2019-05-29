@@ -2,5 +2,7 @@
 
 {% block app_content %}
     <h1>{{ user.username }}</h1>
-
+    <p>Nächste Bearbeitung: {{ user.get_next_module() }}, Nächte Abgabe: {{ user.get_next_sub() }}.</p>
+    <h3>Bearbeitungen</h3>
+    {{ table }}
 {% endblock %}

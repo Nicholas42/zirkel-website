@@ -2,7 +2,7 @@ from flask import request, flash, redirect, url_for, render_template, send_from_
 from flask_login import login_required, current_user
 
 from app import db, submissions, reviews
-from app.models import Submission, Review
+from app.models import Submission, Review, User
 from app.upload import bp
 from app.upload.forms import SubmissionForm
 from app.upload.tables import SubTable
@@ -71,4 +71,4 @@ def submission(index):
 def my_submissions():
     subs = Submission.query.filter_by(author_id=current_user.id).all()
 
-    return render_template("upload/my_submissions.html", subs=SubTable(subs))
+    return render_template("review/show_user.html", user=current_user, table=SubTable(subs))
