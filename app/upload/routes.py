@@ -21,6 +21,7 @@ def upload():
         current_user.next_module = form.next_module.data
         current_user.next_sub = form.next_sub.data
         current_user.next_subject = form.next_subject.data
+        current_user.currently_working = False
 
         db.session.add(sub)
         db.session.commit()
