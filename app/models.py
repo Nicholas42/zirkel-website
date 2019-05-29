@@ -43,6 +43,7 @@ class User(UserMixin, db.Model):
     next_module = db.Column(db.Date)
     next_sub = db.Column(db.Date)
     next_subject = db.Column(db.String)
+    currently_working = db.Column(db.Boolean, default=False)
 
     roles = db.relationship("Role", secondary=user_roles)
     unlocked_modules = db.relationship("Module", secondary=modules_per_user)

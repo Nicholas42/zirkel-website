@@ -87,7 +87,7 @@ def unlock_module():
 
 @bp.route("/user_list")
 def user_list():
-    all_users = UserListTable(User.query.all())
+    all_users = UserListTable(User.query.order_by(User.id).all())
 
     return render_template("review/user_list.html", all_users=all_users)
 
@@ -99,3 +99,13 @@ def show_user(uid):
     subs = Submission.query.filter_by(author=user)
 
     return render_template("review/show_user.html", user=user, table=SubTable(subs))
+
+
+@bp.route("/occupy/<int:user_id>", methods=["POST"])
+def occupy(user_id):
+    user = User.query.get_or_404(user_id)
+
+    user.currently_working = not user.currently_working
+    db.session.commit()
+
+    return redirect(url_for("review.user_list"))

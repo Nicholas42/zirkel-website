@@ -1,4 +1,6 @@
-from flask_table import Table, Col, LinkCol, DatetimeCol, DateCol
+from random import choices
+
+from flask_table import Table, Col, LinkCol, DatetimeCol, DateCol, BoolCol, ButtonCol
 
 
 def transform_sub(sub):
@@ -55,3 +57,7 @@ class UserListTable(Table):
     username = LinkCol("Name", "review.show_user", url_kwargs={"uid": "id"}, attr_list=["username"])
     next_module = DateCol("Nächste Bearbeitung", date_format="medium")
     next_sub = DateCol("Nächste Abgabe", date_format="medium")
+    currently_working = BoolCol("Beschäftigt", yes_display="ja", no_display="nein")
+    set_working = ButtonCol("Beschäftigen", endpoint="review.occupy", url_kwargs={"user_id": "id"},
+                            text_fallback="Ändern")
+
