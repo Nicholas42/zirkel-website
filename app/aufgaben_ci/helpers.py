@@ -14,6 +14,7 @@ from werkzeug.exceptions import NotFound
 LATEXMK_CALL = ["latexmk", "-cd", "-norc", "-pdf", "-quiet"]
 ALL_PATTERN = "**/*"
 PDF_PATTERN = "**/*.pdf"
+TEX_PATTERN = "**/*.tex"
 
 
 def pull_repo(git_path, upstream_url):
@@ -41,10 +42,20 @@ def make_all(directory):
     return runs, errors
 
 
-def copy_rec(source, target, allowed=ALL_PATTERN):
+def tex_to_pdf(f):
+    if f.is_file():
+        assert (f.suffix == ".tex")
+
+        return f.with_suffix(".pdf")
+
+    return f
+
+
+def copy_rec(source, target, allowed=ALL_PATTERN, transform=lambda x: x):
     source = Path(source)
     target = Path(target)
     for f in source.glob(allowed):
+        f = transform(f)
         rel_target = target.joinpath(f.relative_to(source))
         if f.is_file():
             rel_target.parent.mkdir(exist_ok=True, parents=True)
