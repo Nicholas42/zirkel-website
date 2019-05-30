@@ -6,6 +6,6 @@
     <h1>Kontakt</h1>
     <p>Wir sind ein rein privates Projekt zur Förderung von mathematikinteressierten Jugendlichen. Genaueres dazu findet
         man in <a href="{{ url_for("aufgaben_ci.serve_project") }}">unserer Projektbeschreibung</a>.</p>
-    <p>Bei weiteren Fragen kann man sich gerne unter <a href="mailto:nics-lohr@gmx.de">nics-lohr@gmx.de</a> an Nicholas
+    <p>Bei weiteren Fragen kann man sich gerne unter <a href="mailto:{{ config.ADMIN_MAIL }}">{{ config.ADMIN_MAIL }}</a> an Nicholas
         Schwab wenden.</p>
 {% endblock %}
