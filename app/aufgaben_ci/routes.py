@@ -19,7 +19,7 @@ def pullhook():
     # pull_repo(git_path, origin_url)
     ret = make_all(git_path)
 
-    shutil.rmtree(target_path)
+    shutil.rmtree(target_path, ignore_errors=True)
     copy_rec(git_path, target_path, TEX_PATTERN, tex_to_pdf)
     copy_rec(git_path, target_path, "**/beispiel.tex")
 
