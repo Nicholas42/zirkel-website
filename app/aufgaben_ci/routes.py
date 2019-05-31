@@ -1,11 +1,13 @@
 import shutil
 from os import path
 
-from flask import current_app as app, send_from_directory
+from flask import current_app as app, send_from_directory, render_template, current_app
 from flask_login import login_required
 
 from app.aufgaben_ci import bp
-from app.aufgaben_ci.helpers import pull_repo, make_all, copy_rec, serve_path, tex_to_pdf, TEX_PATTERN
+from app.aufgaben_ci.helpers import pull_repo, make_all, copy_rec, serve_path, tex_to_pdf, TEX_PATTERN, url_to_path
+from app.email import send_mail
+from app.models import Module
 
 
 @bp.route("/pullhook", methods=["POST", "GET"])
@@ -14,12 +16,23 @@ def pullhook():
     origin_url = app.config["ORIGIN_URL"]
     target_path = path.join(bp.static_folder, "pdfs")
 
-    pull_repo(git_path, origin_url)
+    # pull_repo(git_path, origin_url)
     ret = make_all(git_path)
 
     shutil.rmtree(target_path)
     copy_rec(git_path, target_path, TEX_PATTERN, tex_to_pdf)
     copy_rec(git_path, target_path, "**/beispiel.tex")
+
+    old_paths = []
+    for mod in Module.query.all():
+        p = url_to_path(mod.path)
+        if p is None or not path.isfile(p):
+            old_paths.append(mod)
+
+    if old_paths:
+        send_mail("ZIRKEL_CI: Pfade nicht mehr aktuell",
+                  render_template("email/path_out_of_date.txt", out_of_date=old_paths),
+                  [current_app.config["ADMIN_MAIL"]])
 
     return "\n".join(["Done, %s runs, %s errors in:" % (ret[0], len(ret[1]))] + ret[1])
 

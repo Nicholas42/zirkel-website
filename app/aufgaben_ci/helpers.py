@@ -11,10 +11,26 @@ from pathlib import Path
 
 from werkzeug.exceptions import NotFound
 
+from app.aufgaben_ci import bp
+
 LATEXMK_CALL = ["latexmk", "-cd", "-norc", "-pdf", "-quiet"]
 ALL_PATTERN = "**/*"
 PDF_PATTERN = "**/*.pdf"
 TEX_PATTERN = "**/*.tex"
+
+
+def url_to_path(url):
+    if not url.startswith(bp.url_prefix):
+        return None
+
+    url = url[len(bp.url_prefix):]
+
+    if url.startswith("/modules/"):
+        return safe_join(path.join(bp.static_folder, "pdfs", "Inhaltliches"), url[len("/modules/"):])
+    elif url.startswith("/tex/"):
+        return safe_join(path.join(bp.static_folder, "pdfs", "Technisches", "TeXTutorial"), url[len("/modules/"):])
+
+    return None
 
 
 def pull_repo(git_path, upstream_url):

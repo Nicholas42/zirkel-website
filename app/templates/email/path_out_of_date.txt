@@ -1,0 +1,7 @@
+Folgende Pfade sind nicht mehr aktuell:
+
+{% set length=8 %}
+id{{ " "*(length -2) }}| Pfad
+{% for i in out_of_date %}
+{{ i.id }}{{ " "*(length - i.id|string|length) }}| {{ i.path }}
+{% endfor %}

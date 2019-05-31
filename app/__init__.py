@@ -38,6 +38,7 @@ def build_app(conf: object = Config) -> Flask:
 
     from app.aufgaben_ci import bp as ci_bp
     app.register_blueprint(ci_bp, url_prefix="/ci")
+    ci_bp.url_prefix = "/ci"
     app.view_functions["aufgaben_ci.static"] = disable_route(lambda x: 0)
 
     from app.upload import bp as upload_bp
