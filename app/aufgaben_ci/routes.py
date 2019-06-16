@@ -16,7 +16,7 @@ def pullhook():
     origin_url = app.config["ORIGIN_URL"]
     target_path = path.join(bp.static_folder, "pdfs")
 
-    # pull_repo(git_path, origin_url)
+    pull_repo(git_path, origin_url)
     ret = make_all(git_path)
 
     shutil.rmtree(target_path, ignore_errors=True)
