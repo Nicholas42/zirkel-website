@@ -58,5 +58,6 @@ def serve_tex(_path):
 
 @bp.route("/modules/", defaults={"_path": ""})
 @bp.route("/modules/<path:_path>")
+@login_required
 def serve_module(_path):
     return serve_path(_path, path.join(bp.static_folder, "pdfs", "Inhaltliches"), "Module")
