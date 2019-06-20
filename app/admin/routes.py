@@ -63,12 +63,12 @@ def create_user():
                   ("Hallo %s,\n"
                    "\n"
                    "Du wurdest beim Korrespondenzzirkel auf zirkel.nicholas-schwab.de registriert. Du kannst dich mit "
-                   "dem Passwort %s auf zirkel.nicholas-schwab.de anmelden.\n "
+                   "dem Passwort %s und Benutzernamen %s auf zirkel.nicholas-schwab.de anmelden.\n "
                    "\n"
                    "Falls du irrtümlich registriert wurdest, wende dich an %s.\n"
                    "\n"
                    "Viele Grüße\n"
-                   "Das Korrespondenzzirkel-Team") % (user.username, pw, current_app.config["ADMIN_MAIL"]),
+                   "Das Korrespondenzzirkel-Team") % (user.username, pw, user.username, current_app.config["ADMIN_MAIL"]),
                   [user.email])
 
         return redirect(url_for("admin.create_user"))
