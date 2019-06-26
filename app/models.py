@@ -114,6 +114,12 @@ class User(UserMixin, db.Model):
         else:
             return alt
 
+    def get_next_subject(self, alt="nix"):
+        if self.next_subject:
+            return self.next_subject
+        else:
+            return alt
+
 
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)

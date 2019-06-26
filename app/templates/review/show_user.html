@@ -2,7 +2,7 @@
 
 {% block app_content %}
     <h1>{{ user.username }}</h1>
-    <p>Nächste Bearbeitung: {{ user.get_next_module() }}, Nächte Abgabe: {{ user.get_next_sub() }}.</p>
+	<p>Nächste Bearbeitung: {{ user.get_next_module() }}, Nächte Abgabe: {{ user.get_next_sub() }}, Gewünscht: {{ user.get_next_subject() }}.</p>
     <p>{% if user.currently_working %}Beschäftigt{% else %}Nicht beschäftigt{% endif %}</p>
     <h3>Bearbeitungen</h3>
     {{ table }}
