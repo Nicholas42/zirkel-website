@@ -48,7 +48,7 @@ class UnderReviewTable(_BaseTable):
 
 class ClosedTable(_BaseTable):
     reviewer = Col("Korrektor", th_html_attrs={"style": "width:20em"})
-    review = LinkCol("Korrektur", "upload.serve_review", url_kwargs={"filename": "filename"}, text_fallback="Url",
+    review = LinkCol("Korrektur", "upload.serve_review", url_kwargs={"filename": "review.filename"}, text_fallback="Url",
                      th_html_attrs={"style": "width:8em"})
 
 
