@@ -13,5 +13,5 @@ class SubTable(Table):
         super(SubTable, self).__init__(*args, **kwargs)
 
         for i in self.items:
-            if i.review.points is None:
+            if i.review and i.review.points is None:
                 i.review.points = 0.0
