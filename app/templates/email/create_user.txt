@@ -1,7 +1,8 @@
 Lieber {{ user.username }},
+
 Du wurdest beim Korrespondenzzirkel auf zirkel.nicholas-schwab.de registriert. Du kannst dich mit dem Passwort {{ password }} und Benutzernamen {{ user.username }} auf zirkel.nicholas-schwab.de anmelden.
 
-Falls du irrtümlich registriert wurdest, wende dich an %s.
+Falls du irrtümlich registriert wurdest, wende dich an {{ admin_mail }}.
 
 Der grobe Ablauf ist wie folgt:
 Du bearbeitest ein Modul und schickst es ein. Am besten ist, wenn du es als TeX-Datei einschickst (wir haben auch ein kleines Tutorial für TeX auf der Seite) jedoch ist am Anfang auch ein PDF von deinem Scan ok (falls es mehrere Dateien sind bitte als .zip)
