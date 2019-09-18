@@ -1,0 +1,11 @@
+{% extends "basic_layout.html" %}
+
+{% block app_content %}
+    <h1>{{ title }}</h1>
+    <div class="list-group row">
+        {% for i in mods %}
+               <a class="list-group-item col-xs-12 " href="{{ i.url }}"><span
+                        class="glyphicon glyphicon-file"></span> {{ i.name }}</a>
+        {% endfor %}
+    </div>
+{% endblock %}

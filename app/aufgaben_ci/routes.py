@@ -1,8 +1,8 @@
 import shutil
 from os import path
 
-from flask import current_app as app, send_from_directory, render_template, current_app
-from flask_login import login_required
+from flask import current_app as app, send_from_directory, render_template, current_app, request, url_for
+from flask_login import login_required, current_user
 
 from app.aufgaben_ci import bp
 from app.aufgaben_ci.helpers import pull_repo, make_all, copy_rec, serve_path, tex_to_pdf, TEX_PATTERN, url_to_path
@@ -54,6 +54,16 @@ def serve_conventions():
 def serve_tex(_path):
     return serve_path(_path, path.join(bp.static_folder, "pdfs", "Technisches", "TeXTutorial"), "TeX-Tutorial",
                       ignore_access=True)
+
+@bp.route("/free_modules/")
+@login_required
+def free_modules():
+    mods = []
+    for mod in Module.query.all():
+        if mod.is_permitted(current_user):
+            mods.append(dict(name=mod.path.rpartition("/")[2], url=mod.path))
+
+    return render_template("aufgaben_ci/free_modules.html", mods=mods)
 
 
 @bp.route("/modules/", defaults={"_path": ""})
