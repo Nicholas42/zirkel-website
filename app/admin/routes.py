@@ -60,15 +60,7 @@ def create_user():
         db.session.commit()
 
         send_mail("Anmeldung beim Korrespondenzzirkel",
-                  ("Hallo %s,\n"
-                   "\n"
-                   "Du wurdest beim Korrespondenzzirkel auf zirkel.nicholas-schwab.de registriert. Du kannst dich mit "
-                   "dem Passwort %s und Benutzernamen %s auf zirkel.nicholas-schwab.de anmelden.\n "
-                   "\n"
-                   "Falls du irrtümlich registriert wurdest, wende dich an %s.\n"
-                   "\n"
-                   "Viele Grüße\n"
-                   "Das Korrespondenzzirkel-Team") % (user.username, pw, user.username, current_app.config["ADMIN_MAIL"]),
+                  render_template("email/create_user.txt", password = pw, user = user, admin_mail = current_app.config["ADMIN_MAIL"]),
                   [user.email])
 
         return redirect(url_for("admin.create_user"))

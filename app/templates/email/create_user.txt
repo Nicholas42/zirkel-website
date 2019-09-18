@@ -1,6 +1,9 @@
 Lieber {{ user.username }},
+Du wurdest beim Korrespondenzzirkel auf zirkel.nicholas-schwab.de registriert. Du kannst dich mit dem Passwort {{ password }} und Benutzernamen {{ user.username }} auf zirkel.nicholas-schwab.de anmelden.
 
-für dich wurde gerade ein Account erstellt. Der grobe Ablauf ist wie folgt:
+Falls du irrtümlich registriert wurdest, wende dich an %s.
+
+Der grobe Ablauf ist wie folgt:
 Du bearbeitest ein Modul und schickst es ein. Am besten ist, wenn du es als TeX-Datei einschickst (wir haben auch ein kleines Tutorial für TeX auf der Seite) jedoch ist am Anfang auch ein PDF von deinem Scan ok (falls es mehrere Dateien sind bitte als .zip)
 
 Beim Einsenden gibst du an, wann du gerne das nächste Modul hättest und bis wann du es bearbeiten willst. Die Module sind darauf ausgelegt, in kurzer Zeit (max 2 Wochen) bearbeitet zu werden. Unserer Erfahrung nach sorgen längere Bearbeitungszeiten nur dafür, dass man es halt in den letzten 2 Wochen macht.
