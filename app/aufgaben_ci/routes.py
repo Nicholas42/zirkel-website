@@ -55,6 +55,7 @@ def serve_tex(_path):
     return serve_path(_path, path.join(bp.static_folder, "pdfs", "Technisches", "TeXTutorial"), "TeX-Tutorial",
                       ignore_access=True)
 
+
 @bp.route("/free_modules/")
 @login_required
 def free_modules():
@@ -62,6 +63,8 @@ def free_modules():
     for mod in Module.query.all():
         if mod.is_permitted(current_user):
             mods.append(dict(name=mod.path.rpartition("/")[2], url=mod.path))
+
+    mods = sorted(mods, key=lambda x: x["name"])
 
     return render_template("aufgaben_ci/free_modules.html", mods=mods, title="Freigeschaltete Module")
 

@@ -95,12 +95,18 @@ def serve_path(_path, static_folder, title, ignore_access=False):
 
     if path.isdir(p):
         children = []
+        c_dirs = []
         for i in listdir(p):
             new_child = {"name": i, "url": url_for(request.endpoint, _path=path.join(_path, i)),
                          "is_dir": path.isdir(path.join(p, i))}
             print(new_child["url"])
             new_child["access"] = ignore_access or new_child["is_dir"] or has_access(new_child["url"])
-            children.append(new_child)
+            if new_child["is_dir"]:
+                c_dirs.append(new_child)
+            else:
+                children.append(new_child)
+
+        children = sorted(c_dirs, key=lambda x: x["name"]) + sorted(children, key=lambda x: x["name"])
 
         if _path in ["", "/"]:
             parent = url_for("main.index")
