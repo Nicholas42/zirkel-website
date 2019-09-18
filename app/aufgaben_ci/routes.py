@@ -63,7 +63,7 @@ def free_modules():
         if mod.is_permitted(current_user):
             mods.append(dict(name=mod.path.rpartition("/")[2], url=mod.path))
 
-    return render_template("aufgaben_ci/free_modules.html", mods=mods)
+    return render_template("aufgaben_ci/free_modules.html", mods=mods, title="Freigeschaltete Module")
 
 
 @bp.route("/modules/", defaults={"_path": ""})
