@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import TextField
+from wtforms import StringField
 from wtforms.fields import FileField, IntegerField, SubmitField, TextAreaField, FloatField
 from wtforms.validators import DataRequired, ValidationError
 from app.models import Submission
@@ -22,8 +22,8 @@ class ReviewUploadForm(FlaskForm):
 
 
 class UnlockModuleForm(FlaskForm):
-    module_path = TextField("Module", validators=[DataRequired()])
-    user_name = TextField("Benutzername",
+    module_path = StringField("Module", validators=[DataRequired()])
+    user_name = StringField("Benutzername",
                           validators=[DataRequired(), validate_exists("username", "Benutzer existiert nicht.")])
 
     submit = SubmitField("Freigeben")

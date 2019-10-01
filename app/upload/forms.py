@@ -1,12 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, TextAreaField, FileField, DateField, TextField
+from wtforms import SubmitField, TextAreaField, FileField, DateField, StringField
 from wtforms.validators import DataRequired
 
 
 class SubmissionForm(FlaskForm):
     notes = TextAreaField("Anmerkungen")
 
-    next_subject = TextField("Ich hätte gerne Aufgaben zum Thema", validators=[DataRequired()])
+    next_subject = StringField("Ich hätte gerne Aufgaben zum Thema", validators=[DataRequired()])
     next_module = DateField("am", format="%d.%m.%Y", validators=[DataRequired()])
     next_sub = DateField("und werde Bearbeitungen einreichen am", format="%d.%m.%Y", validators=[DataRequired()])
     file = FileField("Bearbeitung", validators=[DataRequired()])
