@@ -21,7 +21,7 @@ class _EmptyCol(Col):
 class _BaseTable(Table):
     allow_empty = True
     classes = ["fullwidth"]
-    author = Col("Von", th_html_attrs={"style": "width:20em"})
+    author = LinkCol("Name", "review.show_user", url_kwargs={"uid": "author_id"}, attr_list=["author"], th_html_attrs={"style": "width:20em"})
     upload_time = DatetimeCol("Hochgeladen", datetime_format="dd.MM.YYYY, HH:mm", th_html_attrs={"style": "width:10em"})
     url = LinkCol("Datei", "upload.serve_submission", url_kwargs={"filename": "filename"}, text_fallback="Url",
                   th_html_attrs={"style": "width:8em"})
