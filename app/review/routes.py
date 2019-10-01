@@ -31,7 +31,7 @@ def submissions():
 def claim_submission():
     sub = Submission.query.get_or_404(request.args.get("sub_id"))
 
-    sub.reviewer = current_user;
+    sub.reviewer = current_user
 
     db.session.add(sub)
     db.session.commit()
@@ -64,7 +64,7 @@ def review():
 def unlock_module():
     form = UnlockModuleForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.user_name.data).first()
+        user = User.query.get(form.user_name.data)
         if user is None:
             flash("Benutzer existiert nicht", "error")
             return render_template("basic_form.html", title="Modul freigeben", form=form)
@@ -77,7 +77,7 @@ def unlock_module():
         db.session.add(mod)
         db.session.commit()
 
-        flash("Module freigegeben")
+        flash("Modul freigegeben")
         return redirect(path.dirname(mod.path))
 
     form.module_path.data = request.args.get("module_path", "")

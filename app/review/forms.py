@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField
-from wtforms.fields import FileField, IntegerField, SubmitField, TextAreaField, FloatField
+from wtforms.fields import FileField, IntegerField, SubmitField, TextAreaField, FloatField, SelectField
 from wtforms.validators import DataRequired, ValidationError
-from app.models import Submission
+from app.models import Submission, User
 from app.helpers.form_helpers import validate_exists
 
 
@@ -23,7 +23,10 @@ class ReviewUploadForm(FlaskForm):
 
 class UnlockModuleForm(FlaskForm):
     module_path = StringField("Module", validators=[DataRequired()])
-    user_name = StringField("Benutzername",
-                          validators=[DataRequired(), validate_exists("username", "Benutzer existiert nicht.")])
+    user_name = SelectField("Benutzername", coerce=int)
 
     submit = SubmitField("Freigeben")
+
+    def __init__(self):
+        super(UnlockModuleForm, self).__init__()
+        self.user_name.choices = [(i.id, i.username) for i in User.query.all()]
