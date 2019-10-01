@@ -29,4 +29,4 @@ class UnlockModuleForm(FlaskForm):
 
     def __init__(self):
         super(UnlockModuleForm, self).__init__()
-        self.user_name.choices = [(i.id, i.username) for i in User.query.all()]
+        self.user_name.choices = [(i.id, i.username) for i in User.query.order_by(User.username)]
